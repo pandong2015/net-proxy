@@ -7,7 +7,7 @@
     <groupId>tech.pcloud</groupId>
     <artifactId>net-nnts</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>net-nnts-server</module>
         <module>net-nnts-core</module>
@@ -19,7 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <nnts.version>1.0-SNAPSHOT</nnts.version>
+        <nnts.version>0.0.1-SNAPSHOT</nnts.version>
         <netty-version>4.1.18.Final</netty-version>
         <fastjson.version>1.2.43</fastjson.version>
     </properties>
@@ -52,7 +52,7 @@
             <dependency>
                 <groupId>tech.pcloud</groupId>
                 <artifactId>framework</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
