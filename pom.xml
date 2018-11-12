@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>tech.pcloud</groupId>
+    <artifactId>net-nnts</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>net-nnts-server</module>
+        <module>net-nnts-core</module>
+        <module>net-nnts-message</module>
+        <module>net-nnts-client</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <nnts.version>1.0-SNAPSHOT</nnts.version>
+        <netty-version>4.1.18.Final</netty-version>
+        <fastjson.version>1.2.43</fastjson.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>tech.pcloud</groupId>
+            <artifactId>framework-base</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-nnts-core</artifactId>
+                <version>${nnts.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-nnts-message</artifactId>
+                <version>${nnts.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-nnts-server</artifactId>
+                <version>${nnts.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>framework</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>https://maven.pandong.online/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>https://maven.pandong.online/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>self-releases</id>
+            <url>https://maven.pandong.online/content/repositories/maven-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>self-snapshots</id>
+            <url>https://maven.pandong.online/content/repositories/maven-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
