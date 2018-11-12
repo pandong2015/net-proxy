@@ -12,8 +12,6 @@ import tech.pcloud.nnts.message.TransferProto;
 import tech.pcloud.nnts.server.service.MessageService;
 import tech.pcloud.nnts.server.service.NNTSService;
 
-import java.net.InetSocketAddress;
-
 @Slf4j
 public class ServerChannelHandler extends SimpleChannelInboundHandler<TransferProto.Transfer> {
     private MessageService messageService;
