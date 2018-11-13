@@ -19,7 +19,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <nnts.version>0.0.1-SNAPSHOT</nnts.version>
         <netty-version>4.1.18.Final</netty-version>
         <fastjson.version>1.2.43</fastjson.version>
     </properties>
@@ -36,17 +35,17 @@
             <dependency>
                 <groupId>tech.pcloud</groupId>
                 <artifactId>net-proxy-core</artifactId>
-                <version>${nnts.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>tech.pcloud</groupId>
                 <artifactId>net-proxy-message</artifactId>
-                <version>${nnts.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>tech.pcloud</groupId>
                 <artifactId>net-proxy-server</artifactId>
-                <version>${nnts.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>

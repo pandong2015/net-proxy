@@ -1,6 +1,6 @@
 syntax = "proto2";
 package netty;
-option java_package = "tech.pcloud.nnts.message";
+option java_package = "tech.pcloud.proxy.message";
 option java_outer_classname = "TransferProto";
 
 enum OperationType {
