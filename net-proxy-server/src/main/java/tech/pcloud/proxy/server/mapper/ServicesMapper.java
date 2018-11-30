@@ -12,7 +12,7 @@ public interface ServicesMapper {
     @Update("update server.services set proxy_port=#{proxyPort}, ssl=#{ssl}, status=#{status} where id=#{id}")
     void update(Service service);
 
-    @Select("select a.id, a.name, a.proxy_port, a.ssl, a.status from server.services a, server.node_service_ref b where a.id=b.service_id and b.node_id=#{nodeId}")
+    @Select("select a.id, a.name, a.proxy_port, a.ssl, a.status from server.services a, server.node_service_ref b where a.status=0 and a.id=b.service_id and b.node_id=#{nodeId}")
     @Results(id = "serverResult", value={
             @Result(column = "proxy_port", property = "proxyPort")
     })
@@ -25,4 +25,7 @@ public interface ServicesMapper {
     @Select("select id, name, proxy_port, ssl, status from server.services where name=#{name}")
     @ResultMap(value = "serverResult")
     Service loadByName(String name);
+
+    @Update("update client.services set status=#{status} where id=#{id}")
+    void updateStatus(Service service);
 }

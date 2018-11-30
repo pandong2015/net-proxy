@@ -10,6 +10,8 @@ enum OperationType {
     TRANSFER = 3;
     CLIENT_REGISTER = 4;
     SERVICE_REGISTER = 5;
+    SERVICE_SHUTDOWN = 6;
+    SERVICE_LIST= 7;
 }
 
 enum RequestType {

@@ -24,4 +24,9 @@ public class ServicesController extends BasicController {
     public RestResult<Service> registerService(@RequestBody ServiceRegisterRequest register) {
         return success(servicesService.register(register.getService(), register.getServer()));
     }
+
+    public RestResult<Service> update(@RequestBody Service service){
+
+        return success(service);
+    }
 }

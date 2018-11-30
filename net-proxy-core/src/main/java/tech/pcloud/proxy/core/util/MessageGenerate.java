@@ -3,6 +3,7 @@ package tech.pcloud.proxy.core.util;
 import com.google.protobuf.ByteString;
 import tech.pcloud.proxy.core.model.Node;
 import tech.pcloud.proxy.core.model.Service;
+import tech.pcloud.proxy.core.model.Services;
 import tech.pcloud.proxy.message.TransferProto;
 
 
@@ -51,6 +52,29 @@ public class MessageGenerate {
                 .setRequestId(requestId)
                 .setServiceName(service.getName())
                 .setData(ByteString.copyFromUtf8(service.toJson()))
+                .setType(type)
+                .build();
+    }
+
+    public static TransferProto.Transfer generateServiceShutdownMessage(long requestId, long nodeId, Service service,
+                                                                        TransferProto.RequestType type) {
+        return TransferProto.Transfer.newBuilder()
+                .setOperation(TransferProto.OperationType.SERVICE_SHUTDOWN)
+                .setNodeId(nodeId)
+                .setRequestId(requestId)
+                .setServiceName(service.getName())
+                .setData(ByteString.copyFromUtf8(service.toJson()))
+                .setType(type)
+                .build();
+    }
+
+    public static TransferProto.Transfer generateListServiceMessage(long requestId, long serverId, Services services,
+                                                                        TransferProto.RequestType type) {
+        return TransferProto.Transfer.newBuilder()
+                .setOperation(TransferProto.OperationType.SERVICE_SHUTDOWN)
+                .setNodeId(serverId)
+                .setRequestId(requestId)
+                .setData(ByteString.copyFromUtf8(services.toJson()))
                 .setType(type)
                 .build();
     }

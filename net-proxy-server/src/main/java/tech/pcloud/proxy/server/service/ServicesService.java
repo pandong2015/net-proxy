@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.pcloud.proxy.core.model.Node;
+import tech.pcloud.proxy.core.model.Status;
 import tech.pcloud.proxy.server.mapper.NodeServiceRefMapper;
 import tech.pcloud.proxy.server.mapper.ServicesMapper;
 
@@ -28,5 +29,10 @@ public class ServicesService {
 
     public List<tech.pcloud.proxy.core.model.Service> selectNodeService(long nodeId) {
         return servicesMapper.selectByNode(nodeId);
+    }
+
+    public void delete(tech.pcloud.proxy.core.model.Service service){
+        service.setStatus(Status.OFF.ordinal());
+        servicesMapper.updateStatus(service);
     }
 }

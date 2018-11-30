@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import tech.pcloud.proxy.client.listeners.ServiceRegisterListener;
 import tech.pcloud.proxy.client.mapper.ServicesMapper;
 import tech.pcloud.proxy.core.model.Node;
+import tech.pcloud.proxy.core.model.Status;
 import tech.pcloud.proxy.core.service.IdGenerateService;
 
 import java.util.List;
@@ -41,5 +42,10 @@ public class ServicesService {
         connectionFactory.connect(ConnectionFactory.ConnectType.PROXY, server.getIp(), server.getPort(),
                 new ServiceRegisterListener(client, server, messageService));
         return service;
+    }
+
+    public void delete(tech.pcloud.proxy.core.model.Service service){
+        service.setStatus(Status.OFF.ordinal());
+        servicesMapper.updateStatus(service);
     }
 }

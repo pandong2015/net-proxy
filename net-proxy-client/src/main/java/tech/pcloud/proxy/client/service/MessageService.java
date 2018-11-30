@@ -1,5 +1,6 @@
 package tech.pcloud.proxy.client.service;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +23,11 @@ public class MessageService {
     private IdGenerateService idGenerateService;
     @Autowired
     private ServicesService servicesService;
+
+    public TransferProto.Transfer generateServiceShutdown(Node node, tech.pcloud.proxy.core.model.Service service) {
+        return MessageGenerate.generateServiceShutdownMessage(idGenerateService.generate(IdGenerateService.IdType.REQUEST),
+                node.getId(), service, TransferProto.RequestType.REQUEST);
+    }
 
     public TransferProto.Transfer generateRegistre(Node node) {
         List<tech.pcloud.proxy.core.model.Service> services = servicesService.selectAll();

@@ -7,22 +7,24 @@ import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.core.model.Client;
 import tech.pcloud.proxy.core.model.Node;
 import tech.pcloud.proxy.core.model.Service;
+import tech.pcloud.proxy.core.model.Services;
 import tech.pcloud.proxy.core.service.SpringContext;
 import tech.pcloud.proxy.message.TransferProto;
 import tech.pcloud.proxy.server.service.MessageService;
-import tech.pcloud.proxy.server.service.NNTSService;
+import tech.pcloud.proxy.server.service.ProxyService;
+import tech.pcloud.proxy.server.util.Global;
 
 @Slf4j
 public class ServerChannelHandler extends SimpleChannelInboundHandler<TransferProto.Transfer> {
     private MessageService messageService;
     private Node server;
-    private NNTSService nntsService;
+    private ProxyService proxyService;
 
-    public ServerChannelHandler(){
+    public ServerChannelHandler() {
         log.info("create new ServerChannelHandler");
         messageService = SpringContext.getBean(MessageService.class);
         server = SpringContext.getBean("server", Node.class);
-        nntsService = SpringContext.getBean(NNTSService.class);
+        proxyService = SpringContext.getBean(ProxyService.class);
     }
 
     @Override
@@ -47,6 +49,12 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<TransferPr
             case CLIENT_REGISTER:
                 registre(ctx, msg);
                 break;
+            case SERVICE_SHUTDOWN:
+                shutdownService(ctx, msg);
+                break;
+            case SERVICE_LIST:
+                listService(ctx, msg);
+                break;
             default:
                 log.warn("operation - UNKNOWN");
                 break;
@@ -54,26 +62,26 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<TransferPr
     }
 
     private void transfer(ChannelHandlerContext ctx, TransferProto.Transfer msg) {
-        nntsService.transfer(ctx, msg);
+        proxyService.transfer(ctx, msg);
     }
 
     private void disconnect(ChannelHandlerContext ctx, TransferProto.Transfer msg) {
         long requestId = msg.getRequestId();
         log.debug("disconnect request, request id --> " + requestId);
-        nntsService.disconnect(requestId, ctx.channel());
+        proxyService.disconnect(requestId, ctx.channel());
     }
 
     private void connect(ChannelHandlerContext ctx, TransferProto.Transfer msg) {
         long requestId = msg.getRequestId();
         log.debug("connect request, request id --> " + requestId);
-        nntsService.connect(requestId, ctx.channel());
+        proxyService.connect(requestId, ctx.channel());
     }
 
     private void registreService(ChannelHandlerContext ctx, TransferProto.Transfer msg) {
         String data = msg.getData().toStringUtf8();
         log.info("registre new service --> " + data);
         Service service = JSON.parseObject(data, Service.class);
-        Service newService = nntsService.registreService(service, ctx.channel());
+        Service newService = proxyService.registreService(service, ctx.channel());
         ctx.writeAndFlush(messageService.generateRegistreService(msg, server.getId(), newService));
     }
 
@@ -81,7 +89,24 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<TransferPr
         String data = msg.getData().toStringUtf8();
         log.info("registre new client --> " + data);
         Client client = JSON.parseObject(data, Client.class);
-        nntsService.registreClient(client, ctx.channel());
+        proxyService.registreClient(client, ctx.channel());
         ctx.writeAndFlush(messageService.generateClientRegistre(msg, server, server));
+    }
+
+    private void shutdownService(ChannelHandlerContext ctx, TransferProto.Transfer msg) {
+        String data = msg.getData().toStringUtf8();
+        log.info("shutdown service --> " + data);
+        Service service = JSON.parseObject(data, Service.class);
+        Global.stopProxyServer(service);
+        proxyService.stopService(service);
+        ctx.writeAndFlush(messageService.generateShutdownService(msg, server.getId(), service));
+    }
+
+    private void listService(ChannelHandlerContext ctx, TransferProto.Transfer msg) {
+        String data = msg.getData().toStringUtf8();
+        log.info("list services, request client: "+ data);
+        Client client = JSON.parseObject(data, Client.class);
+        Services services = proxyService.list(client.getId());
+        ctx.writeAndFlush(messageService.generateListService(msg, server.getId(), services));
     }
 }

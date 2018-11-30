@@ -11,10 +11,9 @@ import tech.pcloud.proxy.core.model.Service;
 import tech.pcloud.proxy.core.service.CacheService;
 import tech.pcloud.proxy.core.service.IdGenerateService;
 import tech.pcloud.proxy.core.service.SpringContext;
-import tech.pcloud.proxy.server.service.*;
 import tech.pcloud.proxy.server.service.MessageService;
 import tech.pcloud.proxy.server.util.Global;
-import tech.pcloud.proxy.server.service.NNTSService;
+import tech.pcloud.proxy.server.service.ProxyService;
 
 import java.net.InetSocketAddress;
 
@@ -27,7 +26,7 @@ public class ProxyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private MessageService messageService;
     private IdGenerateService idGenerateService;
     private CacheService cacheService;
-    private NNTSService nntsService;
+    private ProxyService nntsService;
 
     public ProxyChannelHandler(Service service, Node client) {
         this.service = service;
@@ -37,7 +36,7 @@ public class ProxyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
         messageService = SpringContext.getBean(MessageService.class);
         idGenerateService = SpringContext.getBean(IdGenerateService.class);
         cacheService = SpringContext.getBean(CacheService.class);
-        nntsService = SpringContext.getBean(NNTSService.class);
+        nntsService = SpringContext.getBean(ProxyService.class);
     }
 
     @Override

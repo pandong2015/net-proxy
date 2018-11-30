@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 import tech.pcloud.proxy.core.model.Client;
 import tech.pcloud.proxy.core.model.Node;
 import tech.pcloud.proxy.core.model.NodeType;
+import tech.pcloud.proxy.core.model.Services;
 import tech.pcloud.proxy.core.service.CacheService;
 import tech.pcloud.proxy.message.TransferProto;
 import tech.pcloud.proxy.server.util.Global;
 
+import java.util.List;
+
 @Slf4j
 @Service
-public class NNTSService {
+public class ProxyService {
     @Autowired
     @Qualifier(value = "server")
     private Node server;
@@ -46,6 +49,17 @@ public class NNTSService {
             });
         }
         return newClent;
+    }
+
+    public Services list(long id) {
+        List<tech.pcloud.proxy.core.model.Service> serviceList = servicesService.selectNodeService(id);
+        Services services = new Services();
+        services.setServices(serviceList);
+        return services;
+    }
+
+    public void stopService(tech.pcloud.proxy.core.model.Service service) {
+        servicesService.delete(service);
     }
 
     public tech.pcloud.proxy.core.model.Service registreService(tech.pcloud.proxy.core.model.Service service, Channel channel) {

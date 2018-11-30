@@ -30,4 +30,7 @@ public interface ServicesMapper {
     @Update("update client.services set name=#{name}, local_ip=#{localIp}, local_port=#{localPort}, proxy_port=#{proxyPort}, " +
             "ssl=#{ssl}, status=#{status}, health_check_url=#{healthCheckUrl} where id=#{id}")
     void update(Service service);
+
+    @Update("update client.services set status=#{status} where id=#{id}")
+    void updateStatus(Service service);
 }

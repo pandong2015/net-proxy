@@ -3,6 +3,7 @@ package tech.pcloud.proxy.server.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tech.pcloud.proxy.core.model.Node;
+import tech.pcloud.proxy.core.model.Services;
 import tech.pcloud.proxy.core.util.MessageGenerate;
 import tech.pcloud.proxy.message.TransferProto;
 
@@ -19,7 +20,14 @@ public class MessageService {
 
     public TransferProto.Transfer generateRegistreService(TransferProto.Transfer request, long nodeId, tech.pcloud.proxy.core.model.Service service) {
         return MessageGenerate.generateServiceRegistreMessage(request.getRequestId(), nodeId, service, TransferProto.RequestType.RESPONSE);
+    }
 
+    public TransferProto.Transfer generateShutdownService(TransferProto.Transfer request, long nodeId, tech.pcloud.proxy.core.model.Service service) {
+        return MessageGenerate.generateServiceShutdownMessage(request.getRequestId(), nodeId, service, TransferProto.RequestType.RESPONSE);
+    }
+
+    public TransferProto.Transfer generateListService(TransferProto.Transfer request, long nodeId, Services services) {
+        return MessageGenerate.generateListServiceMessage(request.getRequestId(), nodeId, services, TransferProto.RequestType.RESPONSE);
     }
 
     public TransferProto.Transfer generateTransfer(long requestId, Node node, tech.pcloud.proxy.core.model.Service service, byte[] data) {
