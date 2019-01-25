@@ -27,3 +27,7 @@ target/
 .idea/
 log/
 logs/
+serverdb/
+clientdb/
+.project
+.settings/

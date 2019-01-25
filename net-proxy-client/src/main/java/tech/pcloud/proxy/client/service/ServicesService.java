@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import tech.pcloud.proxy.client.listeners.ServiceRegisterListener;
+import tech.pcloud.proxy.client.listeners.ServiceShutdownListener;
 import tech.pcloud.proxy.client.mapper.ServicesMapper;
 import tech.pcloud.proxy.core.model.Node;
 import tech.pcloud.proxy.core.model.Status;
@@ -26,6 +27,8 @@ public class ServicesService {
     private MessageService messageService;
     @Autowired
     private ConnectionFactory connectionFactory;
+    @Autowired
+    private ServerService serverService;
 
     public List<tech.pcloud.proxy.core.model.Service> selectAll() {
         return servicesMapper.selectAll();
@@ -44,8 +47,13 @@ public class ServicesService {
         return service;
     }
 
-    public void delete(tech.pcloud.proxy.core.model.Service service){
+    public void delete(tech.pcloud.proxy.core.model.Service service) {
         service.setStatus(Status.OFF.ordinal());
         servicesMapper.updateStatus(service);
+        List<Node> servers = serverService.getServerByService(service.getId());
+        servers.forEach(s -> {
+            connectionFactory.connect(ConnectionFactory.ConnectType.PROXY, s.getIp(), s.getPort(),
+                    new ServiceShutdownListener(client, s, service, messageService));
+        });
     }
 }
