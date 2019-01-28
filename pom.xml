@@ -55,12 +55,42 @@
             </dependency>
             <dependency>
                 <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-store-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-store-filesystem</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
                 <artifactId>net-proxy-configure</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>tech.pcloud</groupId>
                 <artifactId>net-proxy-configure-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-configure-xml</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-configure-xml-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-configure-xml-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-configure-xml-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -91,6 +121,24 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl -->
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>2.2.11</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>2.2.11</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -12,5 +12,13 @@
     <packaging>pom</packaging>
     <modules>
         <module>net-proxy-store-core</module>
+        <module>net-proxy-store-filesystem</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>tech.pcloud</groupId>
+            <artifactId>net-proxy-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>
