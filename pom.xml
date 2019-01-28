@@ -60,7 +60,22 @@
             </dependency>
             <dependency>
                 <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-configure-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
                 <artifactId>net-proxy-network</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-protocol</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-network-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

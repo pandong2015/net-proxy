@@ -30,4 +30,5 @@ logs/
 serverdb/
 clientdb/
 .project
+.classpath
 .settings/

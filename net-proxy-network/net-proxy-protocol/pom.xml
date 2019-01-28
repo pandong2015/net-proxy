@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>net-proxy-network</artifactId>
+        <groupId>tech.pcloud</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>net-proxy-protocol</artifactId>
+
+    <profiles>
+        <profile>
+            <id>win</id>
+            <properties>
+                <proto.command>protoc.exe</proto.command>
+            </properties>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+        </profile>
+        <profile>
+            <id>linux</id>
+            <properties>
+                <proto.command>protoc-linux</proto.command>
+            </properties>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                </os>
+            </activation>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <properties>
+                <proto.command>protoc-mac</proto.command>
+            </properties>
+            <activation>
+                <os>
+                    <family>Mac</family>
+                </os>
+            </activation>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.5.0</version>
+                <configuration>
+                    <protocExecutable>${project.basedir}/protobuf/${proto.command}</protocExecutable>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

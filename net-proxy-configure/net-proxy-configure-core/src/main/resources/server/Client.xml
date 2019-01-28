@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configure>
+    <client port="1111">
+        <services>
+            <service name="name" status="">
+                <node host="" port=""/>
+            </service>
+        </services>
+    </client>
+</configure>
