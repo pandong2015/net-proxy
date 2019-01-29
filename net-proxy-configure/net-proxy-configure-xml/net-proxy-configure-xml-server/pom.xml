@@ -11,5 +11,10 @@
 
     <artifactId>net-proxy-configure-xml-server</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>tech.pcloud</groupId>
+            <artifactId>net-proxy-configure-xml-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

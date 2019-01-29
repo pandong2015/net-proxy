@@ -3,6 +3,7 @@ package tech.pcloud.proxy.configure.xml.client.service;
 import tech.pcloud.proxy.configure.model.ClientConfig;
 import tech.pcloud.proxy.configure.service.ConfigureService;
 import tech.pcloud.proxy.configure.xml.client.exceptions.ClientXmlConfigureReadException;
+import tech.pcloud.proxy.configure.xml.client.exceptions.ClientXmlConfigureSaveException;
 import tech.pcloud.proxy.configure.xml.client.model.ClientConfigure;
 import tech.pcloud.proxy.configure.xml.client.service.agents.XmlClientConfigureModelAgent;
 import tech.pcloud.proxy.configure.xml.core.utils.XmlHelper;
@@ -28,7 +29,7 @@ public class ClientConfigureService implements ConfigureService<ClientConfig> {
             String content = XmlHelper.object2XmlString(clientConfigure);
             storeService.save(content);
         } catch (Exception e) {
-            throw new ClientXmlConfigureReadException("save client config fail, " + e.getMessage(), e);
+            throw new ClientXmlConfigureSaveException("save client config fail, " + e.getMessage(), e);
         }
     }
 
