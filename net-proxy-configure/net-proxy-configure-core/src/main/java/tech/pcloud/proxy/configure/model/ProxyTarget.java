@@ -11,6 +11,5 @@ import lombok.Data;
 public class ProxyTarget extends BaseObject{
     private Service service;
     private Server proxyServer;
-    private int proxyPort;
     private int status;
 }

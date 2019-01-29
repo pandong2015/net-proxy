@@ -1,7 +1,5 @@
 package tech.pcloud.proxy.configure.xml.client.model;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -39,40 +37,5 @@ public class ClientConfigure {
                 "servers=" + servers +
                 ", client=" + client +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        ClientConfigure clientConfigure = new ClientConfigure();
-        ServerInfo server = new ServerInfo();
-        server.setHose("localhost");
-        server.setPort(8888);
-        ServersInfo serversInfo = new ServersInfo();
-        serversInfo.addServer(server);
-        clientConfigure.setServers(serversInfo);
-
-        ClientInfo clientInfo = new ClientInfo();
-        clientInfo.setPort(9999);
-        ServicesInfo servicesInfo = new ServicesInfo();
-        ServiceInfo serviceInfo = new ServiceInfo();
-        serviceInfo.setName("test");
-        serviceInfo.setProxyPoint(9999);
-        serviceInfo.setStatus(1);
-        ServiceHostsInfo serviceHostsInfo = new ServiceHostsInfo();
-        ServiceHostInfo serviceHostInfo = new ServiceHostInfo();
-        serviceHostInfo.setHost("123456");
-        serviceHostInfo.setPort(2222);
-        serviceHostsInfo.addHost(serviceHostInfo);
-        serviceInfo.setHosts(serviceHostsInfo);
-        servicesInfo.addService(serviceInfo);
-        clientInfo.setServices(servicesInfo);
-        clientConfigure.setClient(clientInfo);
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ClientConfigure.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(clientConfigure, System.out);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

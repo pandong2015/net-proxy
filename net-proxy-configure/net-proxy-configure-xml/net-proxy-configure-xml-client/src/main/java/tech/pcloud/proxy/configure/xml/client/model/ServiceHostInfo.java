@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ServiceHostInfo {
     private String host;
     private int port;
+    private int status;
 
     public String getHost() {
         return host;
@@ -27,6 +28,14 @@ public class ServiceHostInfo {
     @XmlAttribute
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+    @XmlAttribute
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override

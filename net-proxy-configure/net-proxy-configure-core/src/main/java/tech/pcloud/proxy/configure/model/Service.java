@@ -13,6 +13,7 @@ import java.util.List;
 public class Service extends Node {
     private String name;
     private int status;
+    private int proxyPort;
     private List<ProxyTarget> targets;
 
     public Service() {

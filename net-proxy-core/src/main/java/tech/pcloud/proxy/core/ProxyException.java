@@ -49,7 +49,7 @@ public class ProxyException extends RuntimeException {
     }
 
     public int getErrorCode() {
-        return (level.ordinal() + 1) * 1000000 + model.getModelCode() * 10000 + code;
+        return (level.ordinal() + 1) * 1000000 + model.getModelCode() * 1000 + code;
     }
 
     public ExceptionLevel getLevel() {

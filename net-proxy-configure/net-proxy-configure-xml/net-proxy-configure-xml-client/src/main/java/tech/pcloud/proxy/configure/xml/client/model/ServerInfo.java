@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  **/
 @XmlRootElement(name = "Server")
 public class ServerInfo {
-    private String hose;
+    private String host;
     private int port;
 
-    public String getHose() {
-        return hose;
+    public String getHost() {
+        return host;
     }
 
     @XmlAttribute
-    public void setHose(String hose) {
-        this.hose = hose;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public int getPort() {
@@ -34,7 +34,7 @@ public class ServerInfo {
     @Override
     public String toString() {
         return "ServerInfo{" +
-                "hose='" + hose + '\'' +
+                "host='" + host + '\'' +
                 ", port=" + port +
                 '}';
     }

@@ -20,6 +20,6 @@ public class StoreModel implements Model {
 
     @Override
     public int getModelCode() {
-        return 10000+type.ordinal()*1000;
+        return 100+type.ordinal()*10;
     }
 }

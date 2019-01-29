@@ -26,6 +26,6 @@ public class ConfigureModel implements Model {
 
     @Override
     public int getModelCode() {
-        return 20000 + storeType.ordinal() * 1000 + type.ordinal() * 100;
+        return 200 + storeType.ordinal() * 10 + type.ordinal();
     }
 }
