@@ -7,6 +7,8 @@
     <modules>
         <module>net-proxy-protocol</module>
         <module>net-proxy-network-core</module>
+        <module>net-proxy-network-server</module>
+        <module>net-proxy-network-client</module>
     </modules>
     <parent>
         <groupId>tech.pcloud</groupId>
@@ -14,4 +16,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>net-proxy-network</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>tech.pcloud</groupId>
+            <artifactId>net-proxy-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

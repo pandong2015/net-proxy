@@ -108,6 +108,16 @@
                 <artifactId>net-proxy-network-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-network-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.pcloud</groupId>
+                <artifactId>net-proxy-network-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>tech.pcloud</groupId>

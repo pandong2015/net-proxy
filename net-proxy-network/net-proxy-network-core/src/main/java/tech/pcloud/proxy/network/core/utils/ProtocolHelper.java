@@ -107,11 +107,11 @@ public class ProtocolHelper {
                 .build();
     }
 
-    public static ProtocolPackage.Protocol parse(byte[] data) {
+    public static ProtocolPackage.Protocol parse(byte[] data) throws Exception {
         try {
             return ProtocolPackage.Protocol.parseFrom(data);
-        } catch (InvalidProtocolBufferException e) {
-            throw new ProtocolException("protocol parse fail, " + e.getMessage(), e, 11000);
+        } catch (Exception e) {
+            throw e;
         }
     }
 }

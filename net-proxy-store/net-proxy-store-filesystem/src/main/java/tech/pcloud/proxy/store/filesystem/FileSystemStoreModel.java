@@ -1,6 +1,7 @@
 package tech.pcloud.proxy.store.filesystem;
 
 import tech.pcloud.proxy.core.Model;
+import tech.pcloud.proxy.core.ModelFactory;
 import tech.pcloud.proxy.store.core.StoreModel;
 
 /**
@@ -10,11 +11,12 @@ import tech.pcloud.proxy.store.core.StoreModel;
  **/
 public class FileSystemStoreModel extends StoreModel {
 
-    public enum FileSystemStoreModelFactory{
+    public enum FileSystemStoreModelFactory implements ModelFactory {
         INSTANCE;
 
         private Model model = new FileSystemStoreModel();
 
+        @Override
         public Model getModel() {
             return model;
         }
