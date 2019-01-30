@@ -6,14 +6,13 @@ package tech.pcloud.proxy.network.core.protocol;
  * @Date 2019/1/25 14:32
  **/
 public enum Operation {
-    NORMAL(0), HEARTBEAT(1), TRANSFER(2);
-
-    int operation;
-
-    Operation(int operation) {
-        this.operation = operation;
-    }
+    NORMAL, HEARTBEAT, TRANSFER;
 
     public int getOperation() {
-        return operation;
-    }}
+        return this.ordinal();
+    }
+
+    public static Operation getOperation(int operation) {
+        return Operation.values()[operation % Operation.values().length];
+    }
+}

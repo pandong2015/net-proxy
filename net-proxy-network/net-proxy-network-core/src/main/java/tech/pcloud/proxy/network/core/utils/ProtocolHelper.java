@@ -1,9 +1,10 @@
 package tech.pcloud.proxy.network.core.utils;
 
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
-import tech.pcloud.proxy.network.core.exceptions.ProtocolException;
+import tech.pcloud.proxy.configure.model.ToJson;
+import tech.pcloud.proxy.network.core.protocol.ManageProtocolBody;
 import tech.pcloud.proxy.network.core.protocol.Operation;
+import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
 import java.nio.charset.Charset;
@@ -17,36 +18,28 @@ import java.util.Map;
 public class ProtocolHelper {
     public static final String PROTOCOL_VERSION = "1.0";
 
-    public static ProtocolPackage.Protocol createTransferRequestProtocol(byte[] body) {
-        return createRequestProtocol(Operation.TRANSFER.getOperation(), body);
+    public static ProtocolPackage.Protocol createNormalRequestProtocol(ManageProtocolBody body) {
+        return createNormalRequestProtocol(body.getCommand(), ((ToJson) body.getData()).toJson());
     }
 
-    public static ProtocolPackage.Protocol createNormalRequestProtocol(byte[] body) {
-        return createRequestProtocol(Operation.NORMAL.getOperation(), body);
+    public static ProtocolPackage.Protocol createTransferRequestProtocol(Map<String, String> headers, byte[] body) {
+        return createRequestProtocol(Operation.TRANSFER.getOperation(), headers, body);
     }
 
-    public static ProtocolPackage.Protocol createHeartBeatRequestProtocol(byte[] body) {
-        return createRequestProtocol(Operation.HEARTBEAT.getOperation(), body);
+    public static ProtocolPackage.Protocol createHeartBeatRequestProtocol() {
+        return createRequestProtocol(Operation.HEARTBEAT.getOperation(), null, (String) null);
     }
 
-    public static ProtocolPackage.Protocol createTransferRequestProtocol(String body) {
-        return createRequestProtocol(Operation.TRANSFER.getOperation(), body);
+    public static ProtocolPackage.Protocol createNormalRequestProtocol(ProtocolCommand command, String body) {
+        return createRequestProtocol(Operation.NORMAL.getOperation(), command.getHeaders(), body);
     }
 
-    public static ProtocolPackage.Protocol createNormalRequestProtocol(String body) {
-        return createRequestProtocol(Operation.NORMAL.getOperation(), body);
-    }
-
-    public static ProtocolPackage.Protocol createHeartBeatRequestProtocol(String body) {
-        return createRequestProtocol(Operation.HEARTBEAT.getOperation(), body);
-    }
-
-    public static ProtocolPackage.Protocol createRequestProtocol(int operation, String body) {
-        return createRequestProtocol(operation, null, body.getBytes(Charset.forName("UTF-8")));
-    }
-
-    public static ProtocolPackage.Protocol createRequestProtocol(int operation, byte[] body) {
-        return createRequestProtocol(operation, null, body);
+    public static ProtocolPackage.Protocol createRequestProtocol(int operation, Map<String, String> headers, String body) {
+        byte[] bytes = null;
+        if (body != null) {
+            bytes = body.getBytes(Charset.forName("UTF-8"));
+        }
+        return createRequestProtocol(operation, headers, bytes);
     }
 
     public static ProtocolPackage.Protocol createRequestProtocol(int operation, Map<String, String> headers, byte[] body) {
@@ -61,24 +54,20 @@ public class ProtocolHelper {
         return createResponseProtocol(Operation.NORMAL.getOperation(), body);
     }
 
-    public static ProtocolPackage.Protocol createHeartbeatResponseProtocol(byte[] body) {
-        return createResponseProtocol(Operation.HEARTBEAT.getOperation(), body);
-    }
-
-    public static ProtocolPackage.Protocol createTransferResponseProtocol(String body) {
-        return createResponseProtocol(Operation.TRANSFER.getOperation(), body);
-    }
-
     public static ProtocolPackage.Protocol createNormalResponseProtocol(String body) {
         return createResponseProtocol(Operation.NORMAL.getOperation(), body);
     }
 
-    public static ProtocolPackage.Protocol createHeartbeatResponseProtocol(String body) {
-        return createResponseProtocol(Operation.HEARTBEAT.getOperation(), body);
+    public static ProtocolPackage.Protocol createHeartbeatResponseProtocol() {
+        return createResponseProtocol(Operation.HEARTBEAT.getOperation(), (String) null);
     }
 
     public static ProtocolPackage.Protocol createResponseProtocol(int operation, String body) {
-        return createResponseProtocol(operation, null, body.getBytes(Charset.forName("UTF-8")));
+        byte[] bytes = null;
+        if (body != null) {
+            bytes = body.getBytes(Charset.forName("UTF-8"));
+        }
+        return createResponseProtocol(operation, null, bytes);
     }
 
     public static ProtocolPackage.Protocol createResponseProtocol(int operation, byte[] body) {
@@ -96,15 +85,17 @@ public class ProtocolHelper {
 
     public static ProtocolPackage.Protocol createProtocol(String version, int operation, int operationType,
                                                           Map<String, String> headers, byte[] body) {
-        return ProtocolPackage.Protocol.newBuilder()
-                .setVersion(version)
+        ProtocolPackage.Protocol.Builder builder = ProtocolPackage.Protocol.newBuilder();
+        builder.setVersion(version)
                 .setOperation(ProtocolPackage.Operation.newBuilder()
                         .setOperation(operation)
                         .setTypeValue(operationType)
                         .build())
-                .putAllHeaders(headers)
-                .setBody(ByteString.copyFrom(body))
-                .build();
+                .putAllHeaders(headers);
+        if (body != null) {
+            builder.setBody(ByteString.copyFrom(body));
+        }
+        return builder.build();
     }
 
     public static ProtocolPackage.Protocol parse(byte[] data) throws Exception {

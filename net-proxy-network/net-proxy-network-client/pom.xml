@@ -16,5 +16,9 @@
             <groupId>tech.pcloud</groupId>
             <artifactId>net-proxy-network-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
     </dependencies>
 </project>
