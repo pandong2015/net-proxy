@@ -1,6 +1,7 @@
 package tech.pcloud.proxy.configure.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @Date 2019/1/25 11:50
  **/
 @Data
+@EqualsAndHashCode
 public class Server extends Node {
     private List<Client> clients;
 
