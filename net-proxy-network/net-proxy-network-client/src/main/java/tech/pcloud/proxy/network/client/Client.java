@@ -19,8 +19,8 @@ import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.network.client.handler.ClientChannelHandler;
 import tech.pcloud.proxy.network.client.handler.ProtocolChannelHandler;
 import tech.pcloud.proxy.network.client.handler.IdleHandler;
-import tech.pcloud.proxy.network.client.service.CommandServiceFactory;
-import tech.pcloud.proxy.network.client.service.impl.DefaultCommandServiceFactory;
+import tech.pcloud.proxy.network.core.service.CommandServiceFactory;
+import tech.pcloud.proxy.network.core.service.impl.DefaultCommandServiceFactory;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
 import java.util.Map;

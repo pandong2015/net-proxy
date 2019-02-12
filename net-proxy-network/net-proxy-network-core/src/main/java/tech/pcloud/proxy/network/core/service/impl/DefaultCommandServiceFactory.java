@@ -1,11 +1,11 @@
-package tech.pcloud.proxy.network.client.service.impl;
+package tech.pcloud.proxy.network.core.service.impl;
 
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
-import tech.pcloud.proxy.network.client.model.ServiceKey;
-import tech.pcloud.proxy.network.client.service.CommandService;
-import tech.pcloud.proxy.network.client.service.CommandServiceFactory;
-import tech.pcloud.proxy.network.client.utils.ReflectionUtil;
+import tech.pcloud.proxy.network.core.service.ServiceKey;
+import tech.pcloud.proxy.network.core.service.CommandService;
+import tech.pcloud.proxy.network.core.service.CommandServiceFactory;
+import tech.pcloud.proxy.network.core.utils.ReflectionUtil;
 
 import java.util.List;
 import java.util.Map;

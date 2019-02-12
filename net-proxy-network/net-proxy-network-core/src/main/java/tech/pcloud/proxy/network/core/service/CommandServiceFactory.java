@@ -1,6 +1,4 @@
-package tech.pcloud.proxy.network.client.service;
-
-import tech.pcloud.proxy.network.client.model.ServiceKey;
+package tech.pcloud.proxy.network.core.service;
 
 /**
  * @ClassName CommandServiceFactory

@@ -1,4 +1,4 @@
-package tech.pcloud.proxy.network.client.utils;
+package tech.pcloud.proxy.network.core.utils;
 
 import org.reflections.Reflections;
 

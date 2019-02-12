@@ -1,4 +1,4 @@
-package tech.pcloud.proxy.network.client.model;
+package tech.pcloud.proxy.network.core.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

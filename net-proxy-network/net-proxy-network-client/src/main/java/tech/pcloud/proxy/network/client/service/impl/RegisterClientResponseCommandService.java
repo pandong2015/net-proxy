@@ -7,7 +7,7 @@ import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.configure.model.NodeType;
 import tech.pcloud.proxy.core.Result;
 import tech.pcloud.proxy.network.client.exceptions.NetworkClientParseCommandException;
-import tech.pcloud.proxy.network.client.service.CommandService;
+import tech.pcloud.proxy.network.core.service.CommandService;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
