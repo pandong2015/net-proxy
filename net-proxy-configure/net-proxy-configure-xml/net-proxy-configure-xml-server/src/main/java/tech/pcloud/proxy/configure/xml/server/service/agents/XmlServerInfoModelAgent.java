@@ -16,7 +16,13 @@ public class XmlServerInfoModelAgent implements ConfigureModelAgent<Server, Serv
     public Server exchage2Target(ServerInfo serverInfo) {
         Server server = new Server();
         server.setPort(serverInfo.getPort());
-        server.setClients(xmlClientsInfoModelAgent.toTarget(serverInfo.getClients()));
+        if (serverInfo.getMasterPoolSize() > 0) {
+            server.setMasterPoolSize(serverInfo.getMasterPoolSize());
+        }
+        if (serverInfo.getWorkerPoolSize() > 0) {
+            server.setWorkerPoolSize(serverInfo.getWorkerPoolSize());
+        }
+//        server.setClients(xmlClientsInfoModelAgent.toTarget(serverInfo.getClients()));
         return server;
     }
 
@@ -24,7 +30,9 @@ public class XmlServerInfoModelAgent implements ConfigureModelAgent<Server, Serv
     public ServerInfo exchange2Source(Server server) {
         ServerInfo serverInfo = new ServerInfo();
         serverInfo.setPort(server.getPort());
-        serverInfo.setClients(xmlClientsInfoModelAgent.toSource(server.getClients()));
+        serverInfo.setMasterPoolSize(server.getMasterPoolSize());
+        serverInfo.setWorkerPoolSize(server.getWorkerPoolSize());
+//        serverInfo.setClients(xmlClientsInfoModelAgent.toSource(server.getClients()));
         return serverInfo;
     }
 }

@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class ProtocolChannelHandler extends MessageToMessageCodec<ProtocolPackage.Protocol, ProtocolBody> {
+public class ClientProtocolChannelHandler extends MessageToMessageCodec<ProtocolPackage.Protocol, ProtocolBody> {
 
 
-    public ProtocolChannelHandler() {
+    public ClientProtocolChannelHandler() {
     }
 
     @Override

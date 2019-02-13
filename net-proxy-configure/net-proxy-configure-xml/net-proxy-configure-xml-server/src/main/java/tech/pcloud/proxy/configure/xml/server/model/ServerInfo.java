@@ -12,6 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Server")
 public class ServerInfo {
     private int port;
+    private int masterPoolSize = 5;
+    private int workerPoolSize = 200;
     private ClientsInfo clients;
 
     public int getPort() {
@@ -25,6 +27,24 @@ public class ServerInfo {
 
     public ClientsInfo getClients() {
         return clients;
+    }
+
+    public int getMasterPoolSize() {
+        return masterPoolSize;
+    }
+
+    @XmlAttribute
+    public void setMasterPoolSize(int masterPoolSize) {
+        this.masterPoolSize = masterPoolSize;
+    }
+
+    public int getWorkerPoolSize() {
+        return workerPoolSize;
+    }
+
+    @XmlAttribute
+    public void setWorkerPoolSize(int workerPoolSize) {
+        this.workerPoolSize = workerPoolSize;
     }
 
     @XmlElement(name = "Clients")

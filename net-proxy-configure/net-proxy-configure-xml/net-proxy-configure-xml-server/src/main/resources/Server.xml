@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Server port="9550">
-    <Clients>
+<Server port="9550" masterPoolSize="2" workerPoolSize="200">
+    <!--<Clients>
         <Client port="1111" host="">
             <Services>
                 <Service name="name" status="" proxyPort="1111"/>
             </Services>
         </Client>
-    </Clients>
+    </Clients>-->
 </Server>
