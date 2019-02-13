@@ -31,7 +31,7 @@ public class ClientProtocolChannelHandler extends MessageToMessageCodec<Protocol
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ProtocolPackage.Protocol msg, List<Object> out) throws Exception {
-        log.debug("operation:{}, request type:{} " + msg.getOperation().getOperation(), msg.getOperation().getType().name());
+        log.debug("client operation:{}, request type:{} " + msg.getOperation().getOperation(), msg.getOperation().getType().name());
         Operation operation = Operation.getOperation(msg.getOperation().getOperation());
         Map<String, String> headers = msg.getHeadersMap();
         ProtocolCommand command = ProtocolCommand.newInstance(headers);
@@ -48,6 +48,9 @@ public class ClientProtocolChannelHandler extends MessageToMessageCodec<Protocol
                 break;
             case TRANSFER:
                 // no request
+                break;
+            case REQUEST:
+                // @TODO 发起新连接到server，准备进入传输模式
                 break;
             default:
                 log.warn("operation UNKNOWN");
