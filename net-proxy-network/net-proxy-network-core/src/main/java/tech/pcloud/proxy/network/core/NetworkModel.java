@@ -1,6 +1,9 @@
 package tech.pcloud.proxy.network.core;
 
+import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
+import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.core.Model;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
@@ -17,12 +20,22 @@ public class NetworkModel implements Model {
         String HEADER = "header";
         String COMMAND = "command";
         String OPERATION = "operation";
+        String REQUEST_ID = "requestId";
+        String PROXY_SERVER_CHANNEL = "proxyChannel";
+        String PROXY_REQUEST_CHANNEL = "requestChannel";
+        String SERVICE = "service";
+        String CLIENT = "client";
     }
 
     public interface ChannelAttribute {
         AttributeKey<Map<String, String>> HEADER = AttributeKey.newInstance(ChannelAttributeName.HEADER);
         AttributeKey<ProtocolCommand> COMMAND = AttributeKey.newInstance(ChannelAttributeName.COMMAND);
         AttributeKey<ProtocolPackage.Operation> OPERATION = AttributeKey.newInstance(ChannelAttributeName.OPERATION);
+        AttributeKey<Long> REQUEST_ID = AttributeKey.newInstance(ChannelAttributeName.REQUEST_ID);
+        AttributeKey<Channel> PROXY_SERVER_CHANNEL = AttributeKey.newInstance(ChannelAttributeName.PROXY_SERVER_CHANNEL);
+        AttributeKey<Channel> PROXY_REQUEST_CHANNEL = AttributeKey.newInstance(ChannelAttributeName.PROXY_REQUEST_CHANNEL);
+        AttributeKey<Service> SERVICE = AttributeKey.newInstance(ChannelAttributeName.SERVICE);
+        AttributeKey<Client> CLIENT = AttributeKey.newInstance(ChannelAttributeName.CLIENT);
     }
 
     public enum NetworkType {

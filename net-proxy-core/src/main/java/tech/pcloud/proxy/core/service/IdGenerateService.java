@@ -15,9 +15,9 @@ public class IdGenerateService {
         REQUEST, SERVICE
     }
 
-    private Map<IdType, AtomicLong> idMap = Maps.newConcurrentMap();
+    private static Map<IdType, AtomicLong> idMap = Maps.newConcurrentMap();
 
-    public long generate(IdType type) {
+    public static long generate(IdType type) {
         AtomicLong bId = idMap.get(type);
         if (bId == null) {
             bId = new AtomicLong();
