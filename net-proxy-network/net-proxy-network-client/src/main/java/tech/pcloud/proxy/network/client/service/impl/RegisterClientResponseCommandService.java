@@ -5,8 +5,11 @@ import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.Channel;
 import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.configure.model.NodeType;
+import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.core.Result;
 import tech.pcloud.proxy.network.client.exceptions.NetworkClientParseCommandException;
+import tech.pcloud.proxy.network.client.utils.ClientCache;
+import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.service.CommandService;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
@@ -22,8 +25,11 @@ import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 public class RegisterClientResponseCommandService implements CommandService<Client> {
     @Override
     public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Client content) {
-        getLogger().info("register client success!");
         getLogger().debug("response client info:\n{}", content.toJson());
+        Server server = channel.attr(NetworkModel.ChannelAttribute.SERVER).get();
+        Client client = ClientCache.getClientInstance(server);
+        client.setId(content.getId());
+        getLogger().info("register client success!");
     }
 
     @Override

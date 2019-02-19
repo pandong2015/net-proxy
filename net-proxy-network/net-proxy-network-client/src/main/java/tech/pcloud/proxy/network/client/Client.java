@@ -19,6 +19,8 @@ import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.network.client.handler.ClientChannelHandler;
 import tech.pcloud.proxy.network.client.handler.ClientProtocolChannelHandler;
 import tech.pcloud.proxy.network.client.handler.IdleHandler;
+import tech.pcloud.proxy.network.client.utils.ClientCache;
+import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.service.CommandServiceFactory;
 import tech.pcloud.proxy.network.core.service.impl.DefaultCommandServiceFactory;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
@@ -32,7 +34,7 @@ import java.util.Map;
  **/
 @Slf4j
 public class Client {
-    private static final Map<Server, Client> clientCache = Maps.newConcurrentMap();
+
     private Bootstrap bootstrap;
     private NioEventLoopGroup pool = new NioEventLoopGroup(1);
     private Server server;
@@ -77,7 +79,8 @@ public class Client {
                 if (future.isSuccess()) {
                     log.info("connect server[{}:{}] success.", server.getHost(), server.getPort());
                     currentChannel = future.channel();
-                    clientCache.put(server, getClient());
+                    currentChannel.attr(NetworkModel.ChannelAttribute.SERVER).set(server);
+                    ClientCache.addClientServerMapper(server, getClient());
                 } else {
                     log.info("connect server[{}:{}] fail.", server.getHost(), server.getPort());
                 }
@@ -97,10 +100,4 @@ public class Client {
         return this;
     }
 
-    public static Client getInstance(Server server) {
-        if (!clientCache.containsKey(server)) {
-            return new Client(server);
-        }
-        return clientCache.get(server);
-    }
 }

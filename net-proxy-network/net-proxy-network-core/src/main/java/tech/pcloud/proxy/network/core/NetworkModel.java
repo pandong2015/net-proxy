@@ -3,6 +3,7 @@ package tech.pcloud.proxy.network.core;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.core.Model;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
@@ -23,6 +24,7 @@ public class NetworkModel implements Model {
         String REQUEST_ID = "requestId";
         String PROXY_SERVER_CHANNEL = "proxyChannel";
         String PROXY_REQUEST_CHANNEL = "requestChannel";
+        String SERVER = "server";
         String SERVICE = "service";
         String CLIENT = "client";
     }
@@ -34,6 +36,7 @@ public class NetworkModel implements Model {
         AttributeKey<Long> REQUEST_ID = AttributeKey.newInstance(ChannelAttributeName.REQUEST_ID);
         AttributeKey<Channel> PROXY_SERVER_CHANNEL = AttributeKey.newInstance(ChannelAttributeName.PROXY_SERVER_CHANNEL);
         AttributeKey<Channel> PROXY_REQUEST_CHANNEL = AttributeKey.newInstance(ChannelAttributeName.PROXY_REQUEST_CHANNEL);
+        AttributeKey<Server> SERVER = AttributeKey.newInstance(ChannelAttributeName.SERVER);
         AttributeKey<Service> SERVICE = AttributeKey.newInstance(ChannelAttributeName.SERVICE);
         AttributeKey<Client> CLIENT = AttributeKey.newInstance(ChannelAttributeName.CLIENT);
     }

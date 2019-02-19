@@ -95,17 +95,6 @@ public enum ServerCache {
         return servicePortMapping.get(port);
     }
 
-    /*private void sendClientRequest(int port) {
-        Client client = getClient(port);
-        Service service = getService(port);
-        sendClientRequest(client, service);
-    }*/
-
-    /*private void sendClientRequest(Client client, Service service) {
-        Channel proxyChannel = getClientChannel(client);
-        proxyChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.REQUEST.ordinal(), null, service.toJson()));
-    }*/
-
     public void addProxyServerMapping(int port, ProxyServer proxyServer) {
         proxyServerMapping.put(port, proxyServer);
     }
