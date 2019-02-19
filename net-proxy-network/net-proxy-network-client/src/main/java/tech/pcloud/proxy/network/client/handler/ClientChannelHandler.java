@@ -26,8 +26,8 @@ public class ClientChannelHandler extends SimpleChannelInboundHandler<String> {
             return;
         }
         ProtocolCommand command = ctx.channel().attr(NetworkModel.ChannelAttribute.COMMAND).get();
-        ServiceKey key = new ServiceKey(operation.getType(), command.getNodeType());
-        CommandService service = commandServiceFactory.getCommandService(key);
+        ServiceKey key = new ServiceKey(operation.getOperation(), operation.getType(), command.getNodeType());
+        CommandService<String> service = commandServiceFactory.getCommandService(key);
         service.execute(operation, command, ctx.channel(), msg);
     }
 

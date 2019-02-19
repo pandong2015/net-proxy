@@ -17,7 +17,7 @@ import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServiceKey {
+    private int operation;
     private ProtocolPackage.RequestType requestType;
     private NodeType nodeType;
-
 }

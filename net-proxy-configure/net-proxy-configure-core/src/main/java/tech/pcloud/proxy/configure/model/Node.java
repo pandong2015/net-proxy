@@ -9,6 +9,7 @@ import lombok.Data;
  **/
 @Data
 public class Node extends BaseObject{
+    private Long id;
     private String host;
     private int port;
     private NodeType type;

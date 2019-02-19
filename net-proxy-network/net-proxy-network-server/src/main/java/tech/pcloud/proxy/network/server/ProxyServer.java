@@ -49,4 +49,8 @@ public class ProxyServer {
                 });
     }
 
+    public void shutdown(){
+        masterGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
+    }
 }

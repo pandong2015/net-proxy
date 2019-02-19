@@ -1,15 +1,16 @@
 package tech.pcloud.proxy.network.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToMessageCodec;
+import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.Operation;
-import tech.pcloud.proxy.network.core.protocol.ProtocolBody;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
+import tech.pcloud.proxy.network.core.service.CommandService;
+import tech.pcloud.proxy.network.core.service.CommandServiceFactory;
+import tech.pcloud.proxy.network.core.service.ServiceKey;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,14 +19,15 @@ import java.util.Map;
  * @Date 2019/2/13 11:07
  **/
 @Slf4j
-public class ServerProtocolChannelHandler extends MessageToMessageCodec<ProtocolPackage.Protocol, ProtocolBody> {
-    @Override
-    protected void encode(ChannelHandlerContext ctx, ProtocolBody msg, List<Object> out) throws Exception {
+public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<ProtocolPackage.Protocol> {
+    private CommandServiceFactory commandServiceFactory;
 
+    public ServerProtocolChannelHandler(CommandServiceFactory commandServiceFactory) {
+        this.commandServiceFactory = commandServiceFactory;
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ProtocolPackage.Protocol msg, List<Object> out) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, ProtocolPackage.Protocol msg) throws Exception {
         log.debug("server operation:{}, request type:{} " + msg.getOperation().getOperation(), msg.getOperation().getType().name());
         Operation operation = Operation.getOperation(msg.getOperation().getOperation());
         Map<String, String> headers = msg.getHeadersMap();
@@ -33,13 +35,15 @@ public class ServerProtocolChannelHandler extends MessageToMessageCodec<Protocol
         ctx.channel().attr(NetworkModel.ChannelAttribute.HEADER).set(headers);
         ctx.channel().attr(NetworkModel.ChannelAttribute.COMMAND).set(command);
         ctx.channel().attr(NetworkModel.ChannelAttribute.OPERATION).set(msg.getOperation());
+        ServiceKey key = new ServiceKey(operation.getOperation(), msg.getOperation().getType(), command.getNodeType());
+        CommandService commandService = commandServiceFactory.getCommandService(key);
         switch (operation) {
             case HEARTBEAT:
                 log.debug("heartbeat request");
                 break;
             case NORMAL:
                 String content = msg.getBody().toStringUtf8();
-                out.add(content);
+                commandService.execCommand(msg.getOperation(), command, ctx.channel(), content);
                 break;
             case TRANSFER:
                 break;

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class IdGenerateService {
     public enum IdType {
-        REQUEST, SERVICE
+        REQUEST, CLIENT, SERVICE
     }
 
     private static Map<IdType, AtomicLong> idMap = Maps.newConcurrentMap();

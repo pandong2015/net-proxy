@@ -1,7 +1,6 @@
 package tech.pcloud.proxy.network.core.service;
 
 import io.netty.channel.Channel;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.pcloud.proxy.configure.model.NodeType;
@@ -30,7 +29,9 @@ public interface CommandService<T> {
         if (operation == null || command == null || content == null) {
             return false;
         }
-        if (operation.getType() != getRequestType() && command.getNodeType() != getNodeType()) {
+        if (operation.getType() != getRequestType()
+                && operation.getOperation() != getOperation()
+                && command.getNodeType() != getNodeType()) {
             return false;
         }
         return true;
@@ -39,6 +40,8 @@ public interface CommandService<T> {
     ProtocolPackage.RequestType getRequestType();
 
     NodeType getNodeType();
+
+    int getOperation();
 
     T getContentObject(String content);
 

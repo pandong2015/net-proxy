@@ -11,4 +11,8 @@ public interface ClientSelector {
     Client next();
 
     void addClient(Client client);
+
+    void delClient(Client client);
+
+    int size();
 }

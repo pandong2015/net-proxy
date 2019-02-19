@@ -1,5 +1,6 @@
 package tech.pcloud.proxy.network.server.utils;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import tech.pcloud.proxy.configure.model.Client;
@@ -10,6 +11,7 @@ import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
 import tech.pcloud.proxy.network.server.ProxyServer;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,23 +37,43 @@ public enum ServerCache {
         channel.attr(NetworkModel.ChannelAttribute.CLIENT).set(client);
     }
 
-    public void addCLientChannelMapping(Service service, Client client, Channel channel) {
+    public void addClientChannelMapping(Client client, Channel channel) {
         clientChannelMapping.put(client, channel);
-        servicePortMapping.put(service.getProxyPort(), service);
+    }
+
+    public void delService(Service service, Client client) {
         ClientSelector clientSelector = servicePortClientsMapping.get(service.getProxyPort());
-        if (clientSelector == null) {
-            if (service.getClientSelector() == null) {
-                clientSelector = new DefaultClientSelector();
-            } else {
-                try {
-                    clientSelector = service.getClientSelector().newInstance();
-                } catch (Exception e) {
-                    clientSelector = new DefaultClientSelector();
-                }
-            }
-            servicePortClientsMapping.put(service.getProxyPort(), clientSelector);
+        clientSelector.delClient(client);
+        if (clientSelector.size() == 0) {
+            ProxyServer proxyServer = proxyServerMapping.get(service.getProxyPort());
+            proxyServer.shutdown();
+            proxyServerMapping.remove(service.getProxyPort());
         }
-        clientSelector.addClient(client);
+    }
+
+    public void delClient(Client client) {
+        clientChannelMapping.remove(client);
+        client.getServices().forEach(s -> delService(s, client));
+    }
+
+    public void addClientServiceMapping(Service service, Client client) {
+        if (clientChannelMapping.containsKey(client)) {
+            servicePortMapping.put(service.getProxyPort(), service);
+            ClientSelector clientSelector = servicePortClientsMapping.get(service.getProxyPort());
+            if (clientSelector == null) {
+                if (service.getClientSelector() == null) {
+                    clientSelector = new DefaultClientSelector();
+                } else {
+                    try {
+                        clientSelector = service.getClientSelector().newInstance();
+                    } catch (Exception e) {
+                        clientSelector = new DefaultClientSelector();
+                    }
+                }
+                servicePortClientsMapping.put(service.getProxyPort(), clientSelector);
+            }
+            clientSelector.addClient(client);
+        }
     }
 
     public Client getClient(int port) {
@@ -73,16 +95,16 @@ public enum ServerCache {
         return servicePortMapping.get(port);
     }
 
-    private void sendClientRequest(int port) {
+    /*private void sendClientRequest(int port) {
         Client client = getClient(port);
         Service service = getService(port);
         sendClientRequest(client, service);
-    }
+    }*/
 
-    private void sendClientRequest(Client client, Service service) {
+    /*private void sendClientRequest(Client client, Service service) {
         Channel proxyChannel = getClientChannel(client);
         proxyChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.REQUEST.ordinal(), null, service.toJson()));
-    }
+    }*/
 
     public void addProxyServerMapping(int port, ProxyServer proxyServer) {
         proxyServerMapping.put(port, proxyServer);

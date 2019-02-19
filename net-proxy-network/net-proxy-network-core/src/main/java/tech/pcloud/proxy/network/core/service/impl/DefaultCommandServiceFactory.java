@@ -24,7 +24,7 @@ public class DefaultCommandServiceFactory implements CommandServiceFactory {
         classList.forEach(c -> {
             try {
                 CommandService service = ReflectionUtil.newInstance(c);
-                serviceMap.put(new ServiceKey(service.getRequestType(), service.getNodeType()), service);
+                serviceMap.put(new ServiceKey(service.getOperation(), service.getRequestType(), service.getNodeType()), service);
             } catch (Exception e) {
                 log.warn("create class{} instance fail, {}", c.getName(), e.getMessage());
             }
