@@ -1,5 +1,6 @@
 package tech.pcloud.proxy.configure.xml.server.service;
 
+import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.service.ConfigureService;
 import tech.pcloud.proxy.configure.xml.core.utils.XmlHelper;
@@ -14,6 +15,7 @@ import tech.pcloud.proxy.store.core.service.StoreService;
  * @Author pandong
  * @Date 2019/1/29 14:40
  **/
+@Slf4j
 public class ServerConfigureService implements ConfigureService<Server> {
     private XmlServerInfoModelAgent xmlServerInfoModelAgent = new XmlServerInfoModelAgent();
     private StoreService<String> storeService;
@@ -27,7 +29,9 @@ public class ServerConfigureService implements ConfigureService<Server> {
         ServerInfo serverInfo = xmlServerInfoModelAgent.toSource(config);
         try {
             String content = XmlHelper.object2XmlString(serverInfo);
+            log.debug("save content: {}", content);
             storeService.save(content);
+            log.info("save configure success.");
         } catch (Exception e) {
             throw new ServerXmlConfigureSaveException("save server config fail, " + e.getMessage(), e);
         }
@@ -39,6 +43,7 @@ public class ServerConfigureService implements ConfigureService<Server> {
         ServerInfo serverInfo = null;
         try {
             serverInfo = XmlHelper.xmlString2Object(content, ServerInfo.class);
+            log.info("load configure success, configure type:{}.", ServerInfo.class.getName());
         } catch (Exception e) {
             throw new ServerXmlConfigureReadException("load server config fail, " + e.getMessage(), e);
         }

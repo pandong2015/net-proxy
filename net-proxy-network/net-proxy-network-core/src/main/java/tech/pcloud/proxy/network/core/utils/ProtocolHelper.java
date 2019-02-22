@@ -1,7 +1,9 @@
 package tech.pcloud.proxy.network.core.utils;
 
+import com.google.common.collect.Maps;
 import com.google.protobuf.ByteString;
-import tech.pcloud.proxy.configure.model.ToJson;
+import tech.pcloud.proxy.configure.model.NodeType;
+import tech.pcloud.proxy.core.model.ToJson;
 import tech.pcloud.proxy.network.core.protocol.ManageProtocolBody;
 import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
@@ -26,8 +28,10 @@ public class ProtocolHelper {
         return createRequestProtocol(Operation.TRANSFER.getOperation(), headers, body);
     }
 
-    public static ProtocolPackage.Protocol createHeartBeatRequestProtocol() {
-        return createRequestProtocol(Operation.HEARTBEAT.getOperation(), null, (String) null);
+    public static ProtocolPackage.Protocol createHeartBeatRequestProtocol(NodeType nodeType) {
+        Map<String, String> headers = Maps.newHashMap();
+        headers.put(ProtocolCommand.PROTOCOL_HEADER_NAME_NODE_TYPE, nodeType.name());
+        return createRequestProtocol(Operation.HEARTBEAT.getOperation(), headers, (String) null);
     }
 
     public static ProtocolPackage.Protocol createNormalRequestProtocol(ProtocolCommand command, String body) {
@@ -46,32 +50,26 @@ public class ProtocolHelper {
         return createProtocol(operation, ProtocolPackage.RequestType.REQUEST_VALUE, headers, body);
     }
 
-    public static ProtocolPackage.Protocol createTransferResponseProtocol(byte[] body) {
-        return createResponseProtocol(Operation.TRANSFER.getOperation(), body);
+    public static ProtocolPackage.Protocol createNormalResponseProtocol(ManageProtocolBody body) {
+        return createNormalResponseProtocol(body.getCommand(), ((ToJson) body.getData()).toJson());
     }
 
-    public static ProtocolPackage.Protocol createNormalResponseProtocol(byte[] body) {
-        return createResponseProtocol(Operation.NORMAL.getOperation(), body);
+    public static ProtocolPackage.Protocol createNormalResponseProtocol(ProtocolCommand command, String body) {
+        return createResponseProtocol(Operation.NORMAL.getOperation(), command.getHeaders(), body);
     }
 
-    public static ProtocolPackage.Protocol createNormalResponseProtocol(String body) {
-        return createResponseProtocol(Operation.NORMAL.getOperation(), body);
+    public static ProtocolPackage.Protocol createHeartbeatResponseProtocol(NodeType nodeType) {
+        Map<String, String> headers = Maps.newHashMap();
+        headers.put(ProtocolCommand.PROTOCOL_HEADER_NAME_NODE_TYPE, nodeType.name());
+        return createResponseProtocol(Operation.HEARTBEAT.getOperation(), headers, (String) null);
     }
 
-    public static ProtocolPackage.Protocol createHeartbeatResponseProtocol() {
-        return createResponseProtocol(Operation.HEARTBEAT.getOperation(), (String) null);
-    }
-
-    public static ProtocolPackage.Protocol createResponseProtocol(int operation, String body) {
+    public static ProtocolPackage.Protocol createResponseProtocol(int operation, Map<String, String> headers, String body) {
         byte[] bytes = null;
         if (body != null) {
             bytes = body.getBytes(Charset.forName("UTF-8"));
         }
-        return createResponseProtocol(operation, null, bytes);
-    }
-
-    public static ProtocolPackage.Protocol createResponseProtocol(int operation, byte[] body) {
-        return createResponseProtocol(operation, null, body);
+        return createResponseProtocol(operation, headers, bytes);
     }
 
     public static ProtocolPackage.Protocol createResponseProtocol(int operation, Map<String, String> headers, byte[] body) {
@@ -90,8 +88,10 @@ public class ProtocolHelper {
                 .setOperation(ProtocolPackage.Operation.newBuilder()
                         .setOperation(operation)
                         .setTypeValue(operationType)
-                        .build())
-                .putAllHeaders(headers);
+                        .build());
+        if (headers != null) {
+            builder.putAllHeaders(headers);
+        }
         if (body != null) {
             builder.setBody(ByteString.copyFrom(body));
         }

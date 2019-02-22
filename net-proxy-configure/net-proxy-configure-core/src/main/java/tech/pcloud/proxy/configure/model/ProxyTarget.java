@@ -1,6 +1,7 @@
 package tech.pcloud.proxy.configure.model;
 
 import lombok.Data;
+import tech.pcloud.proxy.core.model.BaseEntity;
 
 /**
  * @ClassName ProxyTarget
@@ -8,7 +9,7 @@ import lombok.Data;
  * @Date 2019/1/25 13:32
  **/
 @Data
-public class ProxyTarget extends BaseObject{
+public class ProxyTarget extends BaseEntity {
     private Service service;
     private Server proxyServer;
     private int status;

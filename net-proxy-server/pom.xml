@@ -40,6 +40,19 @@
             <groupId>tech.pcloud</groupId>
             <artifactId>framework-netty-handler</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>tech.pcloud</groupId>
+            <artifactId>net-proxy-configure-xml-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tech.pcloud</groupId>
+            <artifactId>net-proxy-network-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tech.pcloud</groupId>
+            <artifactId>net-proxy-store-filesystem</artifactId>
+        </dependency>
     </dependencies>
 
 

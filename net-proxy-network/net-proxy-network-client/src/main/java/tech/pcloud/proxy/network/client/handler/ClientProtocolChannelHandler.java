@@ -31,8 +31,8 @@ public class ClientProtocolChannelHandler extends MessageToMessageCodec<Protocol
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ProtocolPackage.Protocol msg, List<Object> out) throws Exception {
-        log.debug("client operation:{}, request type:{} " + msg.getOperation().getOperation(), msg.getOperation().getType().name());
         Operation operation = Operation.getOperation(msg.getOperation().getOperation());
+        log.debug("client operation:{}, request type:{} " + operation.name(), msg.getOperation().getType().name());
         Map<String, String> headers = msg.getHeadersMap();
         ProtocolCommand command = ProtocolCommand.newInstance(headers);
         ctx.channel().attr(NetworkModel.ChannelAttribute.HEADER).set(headers);
@@ -40,7 +40,7 @@ public class ClientProtocolChannelHandler extends MessageToMessageCodec<Protocol
         ctx.channel().attr(NetworkModel.ChannelAttribute.OPERATION).set(msg.getOperation());
         switch (operation) {
             case HEARTBEAT:
-                // no request
+                log.debug("heartbeat success.");
                 break;
             case NORMAL:
                 String content = msg.getBody().toStringUtf8();

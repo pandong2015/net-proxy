@@ -27,6 +27,7 @@ public class NetworkModel implements Model {
         String SERVER = "server";
         String SERVICE = "service";
         String CLIENT = "client";
+        String PORT = "port";
     }
 
     public interface ChannelAttribute {
@@ -39,6 +40,7 @@ public class NetworkModel implements Model {
         AttributeKey<Server> SERVER = AttributeKey.newInstance(ChannelAttributeName.SERVER);
         AttributeKey<Service> SERVICE = AttributeKey.newInstance(ChannelAttributeName.SERVICE);
         AttributeKey<Client> CLIENT = AttributeKey.newInstance(ChannelAttributeName.CLIENT);
+        AttributeKey<Integer> PORT = AttributeKey.newInstance(ChannelAttributeName.PORT);
     }
 
     public enum NetworkType {

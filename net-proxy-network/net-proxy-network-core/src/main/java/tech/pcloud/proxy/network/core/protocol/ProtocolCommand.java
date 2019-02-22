@@ -30,10 +30,21 @@ public class ProtocolCommand {
         return headers;
     }
 
+    public static ProtocolCommand newInstance(NodeType nodeType, Command command){
+        ProtocolCommand protocolCommand = new ProtocolCommand();
+        protocolCommand.setCommand(command);
+        protocolCommand.setNodeType(nodeType);
+        return protocolCommand;
+    }
+
     public static ProtocolCommand newInstance(Map<String, String> headers) {
         ProtocolCommand command = new ProtocolCommand();
-        command.setCommand(Command.valueOf(headers.get(PROTOCOL_HEADER_NAME_COMMAND)));
-        command.setNodeType(NodeType.valueOf(headers.get(PROTOCOL_HEADER_NAME_NODE_TYPE)));
+        if(headers.containsKey(PROTOCOL_HEADER_NAME_COMMAND)) {
+            command.setCommand(Command.valueOf(headers.get(PROTOCOL_HEADER_NAME_COMMAND)));
+        }
+        if(headers.containsKey(PROTOCOL_HEADER_NAME_NODE_TYPE)) {
+            command.setNodeType(NodeType.valueOf(headers.get(PROTOCOL_HEADER_NAME_NODE_TYPE)));
+        }
         return command;
     }
 }

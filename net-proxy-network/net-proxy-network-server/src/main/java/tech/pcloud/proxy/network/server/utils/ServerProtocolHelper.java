@@ -1,0 +1,27 @@
+package tech.pcloud.proxy.network.server.utils;
+
+import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.NodeType;
+import tech.pcloud.proxy.network.core.protocol.ManageProtocolBody;
+import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
+import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
+import tech.pcloud.proxy.network.protocol.ProtocolPackage;
+
+/**
+ * @ClassName ServerProtocolHelper
+ * @Author pandong
+ * @Date 2019/2/22 11:19
+ **/
+public class ServerProtocolHelper {
+
+    public static ProtocolPackage.Protocol createRegisterClientResponseProtocol(Client client) {
+        ManageProtocolBody body = new ManageProtocolBody();
+        body.setCommand(ProtocolCommand.newInstance(NodeType.CLIENT, ProtocolCommand.Command.REGISTER));
+        body.setData(ServerUtil.successResult(client));
+        return ProtocolHelper.createNormalResponseProtocol(body);
+    }
+
+    public static ProtocolPackage.Protocol createHeartbeatResponseProtocol() {
+        return ProtocolHelper.createHeartbeatResponseProtocol(NodeType.SERVER);
+    }
+}

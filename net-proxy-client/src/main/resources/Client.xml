@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configure>
+    <Servers>
+        <Server host="127.0.0.1" port="9550"/>
+    </Servers>
+</Configure>

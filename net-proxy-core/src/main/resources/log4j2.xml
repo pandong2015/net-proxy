@@ -4,8 +4,9 @@
 <!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
 <configuration status="WARN" monitorInterval="30">
     <properties>
-        <property name="APP_NAME">nnts-server</property>
-        <property name="Pattern">%d{ISO8601} ${APP_NAME} %highlight{%5level %d{UNIX} --- [%20t] %-50c{1.1} : %msg%n%throwable}</property>
+        <property name="APP_NAME">proxy</property>
+        <!--<property name="Pattern">%d{ISO8601} ${APP_NAME} %highlight{%5level %d{UNIX} -&#45;&#45; [%20t] %-50c{1.1} : %msg%n%throwable}</property>-->
+        <property name="Pattern">%d{ISO8601} - ${APP_NAME} - %highlight{[%5level] - [%-50c{1.1}] - %msg%n%throwable}</property>
     </properties>
 
     <!--先定义所有的appender-->
@@ -51,7 +52,8 @@
         <logger name="org.springframework" level="ERROR"/>
         <logger name="com.zaxxer" level="ERROR"/>
         <logger name="org.apache" level="ERROR"/>
-        <logger name="tech.pcloud.framework" level="INFO"/>
+        <logger name="org.reflections" level="ERROR"/>
+        <logger name="tech.pcloud.framework" level="DEBUG"/>
         <logger name="tech.pcloud" level="DEBUG"/>
         <logger name="org.hibernate" level="ERROR"/>
         <logger name="org.eclipse.jetty" level="ERROR"/>

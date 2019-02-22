@@ -1,6 +1,6 @@
 package tech.pcloud.proxy.network.core.protocol;
 
-import tech.pcloud.proxy.configure.model.ToJson;
+import tech.pcloud.proxy.core.model.ToJson;
 
 /**
  * @ClassName ManageProtocolBody

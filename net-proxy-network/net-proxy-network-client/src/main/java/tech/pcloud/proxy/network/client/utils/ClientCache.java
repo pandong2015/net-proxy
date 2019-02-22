@@ -1,8 +1,9 @@
 package tech.pcloud.proxy.network.client.utils;
 
 import com.google.common.collect.Maps;
-import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.configure.model.Server;
+import tech.pcloud.proxy.network.client.Client;
+import tech.pcloud.proxy.network.client.model.ClientInfo;
 
 import java.util.Map;
 
@@ -12,16 +13,16 @@ import java.util.Map;
  * @Date 2019/2/19 14:57
  **/
 public class ClientCache {
-    private static final Map<Server, Client> clientServerMapping = Maps.newConcurrentMap();
+    private static final Map<Integer, ClientInfo> portServerMapping = Maps.newConcurrentMap();
 
-    public static void addClientServerMapper(Server server, Client client) {
-        clientServerMapping.put(server, client);
+    public static void mappingClientPortAndServer(int port, Server server, Client client) {
+        ClientInfo clientInfo = portServerMapping.computeIfAbsent(port, f -> new ClientInfo());
+        clientInfo.setClient(client);
+        clientInfo.setServer(server);
+        clientInfo.setOpenPort(port);
     }
 
-    public static Client getClientInstance(Server server) {
-        if (!clientServerMapping.containsKey(server)) {
-            return new Client();
-        }
-        return clientServerMapping.get(server);
+    public static ClientInfo getClientInfoWithPort(int port) {
+        return portServerMapping.get(port);
     }
 }

@@ -22,4 +22,12 @@ public class XmlServersInfoModelAgent implements ConfigureModelAgent<List<Server
                 .collect(Collectors.toList());
         return servers;
     }
+
+    @Override
+    public ServersInfo exchange2Source(List<Server> servers) {
+        ServersInfo serversInfo = new ServersInfo();
+        servers.stream().map(s -> xmlServerInfoModelAgent.exchange2Source(s))
+                .forEach(s -> serversInfo.addServer(s));
+        return serversInfo;
+    }
 }

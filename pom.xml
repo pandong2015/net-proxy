@@ -122,7 +122,7 @@
             <dependency>
                 <groupId>tech.pcloud</groupId>
                 <artifactId>framework</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

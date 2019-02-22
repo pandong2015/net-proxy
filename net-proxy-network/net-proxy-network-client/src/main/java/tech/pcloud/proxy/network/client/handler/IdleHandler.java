@@ -4,6 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+import tech.pcloud.proxy.configure.model.NodeType;
+import tech.pcloud.proxy.network.client.utils.ClientProtocolHelper;
 import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
@@ -51,7 +53,7 @@ public class IdleHandler extends IdleStateHandler {
     }
 
     private void sendHeartbeat(ChannelHandlerContext ctx) {
-        ProtocolPackage.Protocol heartbeat = ProtocolHelper.createHeartBeatRequestProtocol();
+        ProtocolPackage.Protocol heartbeat = ClientProtocolHelper.createHeartBeatRequestProtocol();
         ctx.channel().writeAndFlush(heartbeat);
     }
 }

@@ -1,6 +1,7 @@
 package tech.pcloud.proxy.configure.model;
 
 import lombok.Data;
+import tech.pcloud.proxy.core.model.BaseEntity;
 
 /**
  * @ClassName Node
@@ -8,7 +9,7 @@ import lombok.Data;
  * @Date 2019/1/25 11:45
  **/
 @Data
-public class Node extends BaseObject{
+public class Node extends BaseEntity {
     private Long id;
     private String host;
     private int port;
