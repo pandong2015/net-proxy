@@ -53,7 +53,7 @@
         <logger name="com.zaxxer" level="ERROR"/>
         <logger name="org.apache" level="ERROR"/>
         <logger name="org.reflections" level="ERROR"/>
-        <logger name="tech.pcloud.framework" level="DEBUG"/>
+        <logger name="tech.pcloud.framework" level="ERROR"/>
         <logger name="tech.pcloud" level="DEBUG"/>
         <logger name="org.hibernate" level="ERROR"/>
         <logger name="org.eclipse.jetty" level="ERROR"/>

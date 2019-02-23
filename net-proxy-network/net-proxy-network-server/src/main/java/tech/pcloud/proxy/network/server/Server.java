@@ -46,9 +46,9 @@ public class Server implements Initializer {
                     @Override
                     protected void initChannel(SocketChannel channel) throws Exception {
                         channel.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-//                        channel.pipeline().addLast(new DHSecurityCodecHandler(2048));
-                        channel.pipeline().addLast(new ProtobufDecoder(ProtocolPackage.Protocol.getDefaultInstance()));
                         channel.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                        channel.pipeline().addLast(new DHSecurityCodecHandler(2048));
+                        channel.pipeline().addLast(new ProtobufDecoder(ProtocolPackage.Protocol.getDefaultInstance()));
                         channel.pipeline().addLast(new ProtobufEncoder());
 //                channel.pipeline().addLast(new MetricsHandler());
                         channel.pipeline().addLast(new ServerProtocolChannelHandler());

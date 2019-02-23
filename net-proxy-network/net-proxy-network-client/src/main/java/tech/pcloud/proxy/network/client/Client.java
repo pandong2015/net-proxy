@@ -13,6 +13,7 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
+import tech.pcloud.framework.netty.handler.DHSecurityCodecHandler;
 import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.network.client.handler.ClientChannelHandler;
 import tech.pcloud.proxy.network.client.handler.ClientProtocolChannelHandler;
@@ -60,7 +61,7 @@ public class Client implements Initializer {
             protected void initChannel(SocketChannel channel) throws Exception {
                 channel.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                 channel.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
-//                channel.pipeline().addLast(new DHSecurityCodecHandler(2048));
+                channel.pipeline().addLast(new DHSecurityCodecHandler(2048));
                 channel.pipeline().addLast(new ProtobufDecoder(ProtocolPackage.Protocol.getDefaultInstance()));
                 channel.pipeline().addLast(new ProtobufEncoder());
                 channel.pipeline().addLast(new IdleHandler());
