@@ -2,10 +2,13 @@ package tech.pcloud.proxy.network.client.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.core.Result;
 import tech.pcloud.proxy.network.client.model.ClientInfo;
 import tech.pcloud.proxy.network.client.utils.ClientCache;
+import tech.pcloud.proxy.network.client.utils.ClientProtocolHelper;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.core.service.CommandService;
 import tech.pcloud.proxy.network.core.service.adaptors.GetClientNodeType;
@@ -35,7 +38,17 @@ public class RegisterClientResponseCommandService
             clientInfo.setId(content.getId());
             getLogger().info("register client success, client id : [{}]!", content.getId());
             clientInfo.getServices().forEach(service -> {
+                channel.writeAndFlush(ClientProtocolHelper.createRegisterServiceRequestProtocol(service)).addListener(new ChannelFutureListener() {
 
+                    @Override
+                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                        if (channelFuture.isSuccess()) {
+                            getLogger().info("send register service success.");
+                        } else {
+                            getLogger().warn("send register service fail.");
+                        }
+                    }
+                });
             });
         } else {
             getLogger().warn("register client fail, no client info.");

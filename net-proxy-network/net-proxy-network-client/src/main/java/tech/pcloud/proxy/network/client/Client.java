@@ -12,8 +12,6 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.framework.netty.handler.DHSecurityCodecHandler;
 import tech.pcloud.proxy.configure.model.Server;
@@ -89,7 +87,7 @@ public class Client implements Initializer {
                     InetSocketAddress inetSocketAddress = (InetSocketAddress) currentChannel.localAddress();
                     currentChannel.attr(NetworkModel.ChannelAttribute.SERVER).set(server);
                     currentChannel.attr(NetworkModel.ChannelAttribute.PORT).set(inetSocketAddress.getPort());
-                    ClientCache.mappingClientPortAndServer(inetSocketAddress.getPort(), server, getClient());
+                    ClientCache.mappingClientInfoWithPort(inetSocketAddress.getPort(), clientInfo);
                     log.info("connect server[{}:{}] success, bind port: {}", server.getHost(), server.getPort(), inetSocketAddress.getPort());
                     register();
                 } else {

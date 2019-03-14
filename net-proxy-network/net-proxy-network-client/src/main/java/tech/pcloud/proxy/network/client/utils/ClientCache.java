@@ -15,11 +15,9 @@ import java.util.Map;
 public class ClientCache {
     private static final Map<Integer, ClientInfo> portServerMapping = Maps.newConcurrentMap();
 
-    public static void mappingClientPortAndServer(int port, Server server, Client client) {
-        ClientInfo clientInfo = portServerMapping.computeIfAbsent(port, f -> new ClientInfo());
-        clientInfo.setClient(client);
-        clientInfo.setServer(server);
+    public static void mappingClientInfoWithPort(int port, ClientInfo clientInfo){
         clientInfo.setOpenPort(port);
+        portServerMapping.put(port, clientInfo);
     }
 
     public static ClientInfo getClientInfoWithPort(int port) {

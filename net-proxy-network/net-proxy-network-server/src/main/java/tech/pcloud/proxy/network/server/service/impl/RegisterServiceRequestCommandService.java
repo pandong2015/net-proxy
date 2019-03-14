@@ -24,8 +24,8 @@ public class RegisterServiceRequestCommandService
         implements CommandService<Service>, GetServiceNodeType, GetRequestType, GetNormalOperation, GetObjectContentObject<Service> {
     @Override
     public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Service content) {
-        getLogger().info("register service success!");
-        getLogger().debug("request service info:\n{}", content.toJson());
+//        getLogger().info("register service success!");
+//        getLogger().debug("request service info:\n{}", content.toJson());
     }
 
     @Override
