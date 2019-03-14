@@ -10,7 +10,6 @@ import tech.pcloud.proxy.core.model.BaseEntity;
  **/
 @Data
 public class ProxyTarget extends BaseEntity {
-    private Service service;
-    private Server proxyServer;
-    private int status;
+    private String serverName;
+    private Status status;
 }
