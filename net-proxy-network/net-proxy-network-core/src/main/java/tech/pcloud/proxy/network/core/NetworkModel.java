@@ -6,6 +6,7 @@ import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.core.Model;
+import tech.pcloud.proxy.core.ModelFactory;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
@@ -44,7 +45,7 @@ public class NetworkModel implements Model {
     }
 
     public enum NetworkType {
-        SERVER, CLIENT
+        SERVER, CLIENT, CORE
     }
 
     private NetworkType type;
@@ -56,5 +57,15 @@ public class NetworkModel implements Model {
     @Override
     public int getModelCode() {
         return 300 + type.ordinal() * 10;
+    }
+
+    public enum NetworkModelFactory implements ModelFactory {
+        INSTANCE;
+        private Model model = new NetworkModel(NetworkType.CORE);
+
+        @Override
+        public Model getModel() {
+            return model;
+        }
     }
 }

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configure>
+    <port>9999</port>
     <servers>
         <server host="" port=""/>
     </servers>
-    <client port="1111">
-        <services>
-            <service name="name" status="" proxyPort="">
-                <nodes>
-                    <node host="" port="" status=""/>
-                </nodes>
-            </service>
-        </services>
-    </client>
+    <services>
+        <service name="name" status="" proxyPort="">
+            <nodes>
+                <node host="" port="" status=""/>
+            </nodes>
+        </service>
+    </services>
 </configure>

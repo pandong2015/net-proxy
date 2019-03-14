@@ -26,7 +26,7 @@ public class XmlServiceHostsInfoModelAgent implements ConfigureModelAgent<List<P
     public ServiceHostsInfo exchange2Source(List<ProxyTarget> proxyTargets) {
         ServiceHostsInfo serviceHostsInfo = new ServiceHostsInfo();
         serviceHostsInfo.setHosts(proxyTargets.stream()
-                .map(p -> xmlServiceHostInfoModelAgent.exchange2Source(p))
+                .map(p -> xmlServiceHostInfoModelAgent.toSource(p))
                 .collect(Collectors.toList()));
         return serviceHostsInfo;
     }

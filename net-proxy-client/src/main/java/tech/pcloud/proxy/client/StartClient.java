@@ -4,6 +4,7 @@ import tech.pcloud.proxy.configure.model.ClientConfig;
 import tech.pcloud.proxy.configure.service.ConfigureService;
 import tech.pcloud.proxy.configure.xml.client.service.ClientConfigureService;
 import tech.pcloud.proxy.network.client.Client;
+import tech.pcloud.proxy.network.client.model.ClientInfo;
 import tech.pcloud.proxy.store.core.service.StoreService;
 import tech.pcloud.proxy.store.filesystem.service.FileSystemStoreService;
 
@@ -16,7 +17,7 @@ import java.nio.file.Paths;
  * @Date 2019/2/21 15:12
  **/
 public class StartClient {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         StoreService storeService = null;
         try {
             storeService = new FileSystemStoreService(Paths.get(StartClient.class.getResource("/Client.xml").toURI()));
@@ -26,7 +27,11 @@ public class StartClient {
         ConfigureService<ClientConfig> configureService = new ClientConfigureService(storeService);
         ClientConfig clientConfig = configureService.loadConfigure();
         clientConfig.getServers().forEach(s -> {
-            Client client = new Client(s);
+            ClientInfo clientInfo = new ClientInfo();
+            clientInfo.setOpenPort(clientConfig.getPort());
+            clientInfo.setServer(s);
+            clientInfo.setServices(clientConfig.getServices(s));
+            Client client = new Client(clientInfo);
             client.init();
         });
 

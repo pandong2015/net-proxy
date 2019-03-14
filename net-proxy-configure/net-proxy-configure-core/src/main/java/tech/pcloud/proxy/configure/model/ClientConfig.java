@@ -1,8 +1,13 @@
 package tech.pcloud.proxy.configure.model;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @ClassName ClientConfig
@@ -11,6 +16,24 @@ import java.util.List;
  **/
 @Data
 public class ClientConfig {
-    private Client client;
+    private int port;
+    private List<Service> services;
     private List<Server> servers;
+
+    public List<Service> getServices(Server server) {
+        if (services == null || services.isEmpty()) {
+            return Lists.newArrayList();
+        }
+        Map<Server, Set<Service>> serverListMap = Maps.newHashMap();
+        services.stream().filter(Service::isDeploy).forEach(s -> {
+            s.getTargets().forEach(t -> {
+                Set<Service> serviceSet = serverListMap.computeIfAbsent(t.getProxyServer(), f -> Sets.newHashSet());
+                serviceSet.add(s);
+            });
+        });
+        if (serverListMap.containsKey(server)) {
+            return Lists.newArrayList(serverListMap.get(server));
+        }
+        return Lists.newArrayList();
+    }
 }

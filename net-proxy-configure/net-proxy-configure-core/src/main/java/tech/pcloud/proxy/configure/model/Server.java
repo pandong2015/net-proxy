@@ -11,9 +11,8 @@ import java.util.List;
  * @Date 2019/1/25 11:50
  **/
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class Server extends Node {
-    //    private List<Client> clients;
     private int masterPoolSize = 5;
     private int workerPoolSize = 200;
 

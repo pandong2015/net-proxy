@@ -1,5 +1,6 @@
 package tech.pcloud.proxy.configure.xml.client.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,7 +12,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Configure")
 public class ClientConfigure {
     private ServersInfo servers;
-    private ClientInfo client;
+    private int port;
+    private ServicesInfo services;
+
+    public int getPort() {
+        return port;
+    }
+
+    @XmlElement(name = "Port")
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public ServicesInfo getServices() {
+        return services;
+    }
+
+    @XmlElement(name = "Services")
+    public void setServices(ServicesInfo services) {
+        this.services = services;
+    }
 
     public ServersInfo getServers() {
         return servers;
@@ -22,20 +42,12 @@ public class ClientConfigure {
         this.servers = servers;
     }
 
-    public ClientInfo getClient() {
-        return client;
-    }
-
-    @XmlElement(name = "Client")
-    public void setClient(ClientInfo client) {
-        this.client = client;
-    }
-
     @Override
     public String toString() {
         return "ClientConfigure{" +
                 "servers=" + servers +
-                ", client=" + client +
+                ", port=" + port +
+                ", services=" + services +
                 '}';
     }
 }

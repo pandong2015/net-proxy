@@ -24,7 +24,7 @@ public class XmlServicesInfoModelAgent implements ConfigureModelAgent<List<Servi
     public ServicesInfo exchange2Source(List<Service> services) {
         ServicesInfo servicesInfo = new ServicesInfo();
         servicesInfo.setServices(services.stream()
-                .map(s -> xmlServiceInfoModelAgent.exchange2Source(s))
+                .map(s -> xmlServiceInfoModelAgent.toSource(s))
                 .collect(Collectors.toList()));
         return servicesInfo;
     }

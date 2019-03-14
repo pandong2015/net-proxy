@@ -28,7 +28,7 @@ public class XmlServiceInfoModelAgent implements ConfigureModelAgent<Service, Se
         serviceInfo.setStatus(service.getStatus());
         serviceInfo.setName(service.getName());
         serviceInfo.setProxyPoint(service.getProxyPort());
-        serviceInfo.setHosts(xmlServiceHostsInfoModelAgent.exchange2Source(service.getTargets()));
+        serviceInfo.setHosts(xmlServiceHostsInfoModelAgent.toSource(service.getTargets()));
         return serviceInfo;
     }
 }

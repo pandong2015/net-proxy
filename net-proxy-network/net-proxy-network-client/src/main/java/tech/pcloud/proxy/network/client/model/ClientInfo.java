@@ -1,8 +1,12 @@
 package tech.pcloud.proxy.network.client.model;
 
+import com.google.common.collect.Lists;
 import lombok.Data;
 import tech.pcloud.proxy.configure.model.Server;
+import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.network.client.Client;
+
+import java.util.List;
 
 /**
  * @ClassName ClientInfo
@@ -15,4 +19,5 @@ public class ClientInfo {
     private Server server;
     private int openPort;
     private long id;
+    private List<Service> services = Lists.newArrayList();
 }

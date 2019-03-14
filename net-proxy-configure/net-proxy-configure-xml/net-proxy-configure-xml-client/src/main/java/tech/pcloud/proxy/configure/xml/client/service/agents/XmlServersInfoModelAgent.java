@@ -26,7 +26,7 @@ public class XmlServersInfoModelAgent implements ConfigureModelAgent<List<Server
     @Override
     public ServersInfo exchange2Source(List<Server> servers) {
         ServersInfo serversInfo = new ServersInfo();
-        servers.stream().map(s -> xmlServerInfoModelAgent.exchange2Source(s))
+        servers.stream().map(s -> xmlServerInfoModelAgent.toSource(s))
                 .forEach(s -> serversInfo.addServer(s));
         return serversInfo;
     }

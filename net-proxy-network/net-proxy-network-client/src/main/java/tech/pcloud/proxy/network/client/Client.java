@@ -12,12 +12,15 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.framework.netty.handler.DHSecurityCodecHandler;
 import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.network.client.handler.ClientChannelHandler;
 import tech.pcloud.proxy.network.client.handler.ClientProtocolChannelHandler;
 import tech.pcloud.proxy.network.client.handler.IdleHandler;
+import tech.pcloud.proxy.network.client.model.ClientInfo;
 import tech.pcloud.proxy.network.client.utils.ClientCache;
 import tech.pcloud.proxy.network.client.utils.ClientProtocolHelper;
 import tech.pcloud.proxy.network.core.NetworkModel;
@@ -38,16 +41,16 @@ public class Client implements Initializer {
 
     private Bootstrap bootstrap;
     private NioEventLoopGroup pool = new NioEventLoopGroup(1);
-    private Server server;
     private Channel currentChannel;
     private CommandServiceFactory commandServiceFactory;
+    private ClientInfo clientInfo;
 
-    public Client(Server server) {
-        this(server, new DefaultCommandServiceFactory(Client.class.getPackage().getName()));
+    public Client(ClientInfo clientInfo) {
+        this(clientInfo, new DefaultCommandServiceFactory(Client.class.getPackage().getName()));
     }
 
-    public Client(Server server, CommandServiceFactory commandServiceFactory) {
-        this.server = server;
+    public Client(ClientInfo clientInfo, CommandServiceFactory commandServiceFactory) {
+        this.clientInfo = clientInfo;
         this.commandServiceFactory = commandServiceFactory;
     }
 
@@ -73,17 +76,21 @@ public class Client implements Initializer {
     }
 
     public void connectServer() {
+        if (clientInfo.getOpenPort() > 0) {
+            bootstrap.localAddress(clientInfo.getOpenPort());
+        }
+        Server server = clientInfo.getServer();
         bootstrap.connect(server.getHost(), server.getPort()).addListener(new ChannelFutureListener() {
 
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    log.info("connect server[{}:{}] success.", server.getHost(), server.getPort());
                     currentChannel = future.channel();
                     InetSocketAddress inetSocketAddress = (InetSocketAddress) currentChannel.localAddress();
                     currentChannel.attr(NetworkModel.ChannelAttribute.SERVER).set(server);
                     currentChannel.attr(NetworkModel.ChannelAttribute.PORT).set(inetSocketAddress.getPort());
                     ClientCache.mappingClientPortAndServer(inetSocketAddress.getPort(), server, getClient());
+                    log.info("connect server[{}:{}] success, bind port: {}", server.getHost(), server.getPort(), inetSocketAddress.getPort());
                     register();
                 } else {
                     log.info("connect server[{}:{}] fail.", server.getHost(), server.getPort());
@@ -92,12 +99,21 @@ public class Client implements Initializer {
         });
     }
 
-    public void register() {
+    private void register() {
         int port = currentChannel.attr(NetworkModel.ChannelAttribute.PORT).get();
         tech.pcloud.proxy.configure.model.Client client = new tech.pcloud.proxy.configure.model.Client();
         client.setPort(port);
         log.debug("register client, {}", client);
-        currentChannel.writeAndFlush(ClientProtocolHelper.createRegisterClientRequestProtocol(client));
+        ChannelFuture future = currentChannel.writeAndFlush(ClientProtocolHelper.createRegisterClientRequestProtocol(client));
+        future.addListener(new ChannelFutureListener() {
+
+            @Override
+            public void operationComplete(ChannelFuture future) throws Exception {
+                if (future.isSuccess()) {
+                    log.info("client register request send success.");
+                }
+            }
+        });
     }
 
     public void write(Object msg) {

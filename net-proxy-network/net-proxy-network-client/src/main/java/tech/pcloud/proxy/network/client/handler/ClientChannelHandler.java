@@ -43,7 +43,7 @@ public class ClientChannelHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error(cause.getMessage(), cause);
+        log.error(cause.getMessage());
     }
 
 }

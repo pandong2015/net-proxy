@@ -4,6 +4,7 @@ import lombok.Data;
 import tech.pcloud.proxy.configure.service.ClientSelector;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -21,6 +22,13 @@ public class Service extends Node {
 
     public Service() {
         super(NodeType.SERVICE);
+    }
+
+    public boolean isDeploy() {
+        if (targets == null || targets.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
