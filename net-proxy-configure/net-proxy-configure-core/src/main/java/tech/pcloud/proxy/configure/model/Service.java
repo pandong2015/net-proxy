@@ -15,7 +15,7 @@ import java.util.Objects;
 @Data
 public class Service extends Node {
     private String name;
-    private int status;
+    private Status status;
     private Class<? extends ClientSelector> clientSelector;
     private int proxyPort;
     private List<ProxyTarget> targets;

@@ -24,15 +24,15 @@ public class ClientConfig {
         if (services == null || services.isEmpty()) {
             return Lists.newArrayList();
         }
-        Map<Server, Set<Service>> serverListMap = Maps.newHashMap();
+        Map<String, Set<Service>> serverListMap = Maps.newHashMap();
         services.stream().filter(Service::isDeploy).forEach(s -> {
             s.getTargets().forEach(t -> {
-                Set<Service> serviceSet = serverListMap.computeIfAbsent(t.getProxyServer(), f -> Sets.newHashSet());
+                Set<Service> serviceSet = serverListMap.computeIfAbsent(t.getServerName(), f -> Sets.newHashSet());
                 serviceSet.add(s);
             });
         });
-        if (serverListMap.containsKey(server)) {
-            return Lists.newArrayList(serverListMap.get(server));
+        if (serverListMap.containsKey(server.getName())) {
+            return Lists.newArrayList(serverListMap.get(server.getName()));
         }
         return Lists.newArrayList();
     }

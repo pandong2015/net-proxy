@@ -8,41 +8,34 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @Author pandong
  * @Date 2019/1/28 16:26
  **/
-@XmlRootElement(name = "Node")
+@XmlRootElement(name = "Ref")
 public class ServiceHostInfo {
-    private String host;
-    private int port;
-    private int status;
+    private String name;
+    private String status;
 
-    public String getHost() {
-        return host;
+    public String getName() {
+        return name;
     }
+
     @XmlAttribute
-    public void setHost(String host) {
-        this.host = host;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getPort() {
-        return port;
-    }
-    @XmlAttribute
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
+
     @XmlAttribute
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
         return "ServiceHostInfo{" +
-                "host='" + host + '\'' +
-                ", port=" + port +
+                "name='" + name + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

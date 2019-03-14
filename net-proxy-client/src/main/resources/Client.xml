@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configure>
+    <Port>9999</Port>
     <Servers>
-        <Server host="127.0.0.1" port="9550"/>
+        <Server name="local" host="127.0.0.1" port="9550"/>
     </Servers>
+    <Services>
+        <Service name="callback" status="NORMAL" proxyPort="10010">
+            <Servers>
+                <Ref name="local" status="NORMAL" />
+            </Servers>
+        </Service>
+    </Services>
 </Configure>

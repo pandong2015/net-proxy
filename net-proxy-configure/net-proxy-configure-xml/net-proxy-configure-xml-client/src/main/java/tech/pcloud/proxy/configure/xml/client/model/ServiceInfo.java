@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Service")
 public class ServiceInfo {
     private String name;
-    private int status;
+    private String status;
     private int proxyPoint;
     private ServiceHostsInfo hosts;
 
@@ -24,11 +24,11 @@ public class ServiceInfo {
         this.name = name;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
     @XmlAttribute
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -43,7 +43,7 @@ public class ServiceInfo {
     public ServiceHostsInfo getHosts() {
         return hosts;
     }
-    @XmlElement(name = "Nodes")
+    @XmlElement(name = "Servers")
     public void setHosts(ServiceHostsInfo hosts) {
         this.hosts = hosts;
     }

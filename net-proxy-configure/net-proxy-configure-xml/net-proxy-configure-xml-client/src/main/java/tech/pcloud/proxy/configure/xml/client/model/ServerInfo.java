@@ -12,6 +12,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ServerInfo {
     private String host;
     private int port;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    @XmlAttribute
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getHost() {
         return host;

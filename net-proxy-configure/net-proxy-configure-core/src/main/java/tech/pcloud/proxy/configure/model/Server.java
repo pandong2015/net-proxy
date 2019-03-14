@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Server extends Node {
+    private String name;
     private int masterPoolSize = 5;
     private int workerPoolSize = 200;
 

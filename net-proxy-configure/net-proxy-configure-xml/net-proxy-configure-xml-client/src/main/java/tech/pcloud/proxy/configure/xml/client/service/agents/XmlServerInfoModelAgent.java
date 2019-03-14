@@ -13,6 +13,7 @@ public class XmlServerInfoModelAgent implements ConfigureModelAgent<Server, Serv
     @Override
     public Server exchage2Target(ServerInfo serverInfo) {
         Server server = new Server();
+        server.setName(serverInfo.getName());
         server.setHost(serverInfo.getHost());
         server.setPort(serverInfo.getPort());
         return server;
@@ -21,6 +22,7 @@ public class XmlServerInfoModelAgent implements ConfigureModelAgent<Server, Serv
     @Override
     public ServerInfo exchange2Source(Server server) {
         ServerInfo serverInfo = new ServerInfo();
+        serverInfo.setName(server.getName());
         serverInfo.setPort(server.getPort());
         serverInfo.setHost(server.getHost());
         return serverInfo;

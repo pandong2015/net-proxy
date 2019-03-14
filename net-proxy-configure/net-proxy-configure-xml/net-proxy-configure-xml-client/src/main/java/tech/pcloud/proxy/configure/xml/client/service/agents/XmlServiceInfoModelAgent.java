@@ -1,6 +1,7 @@
 package tech.pcloud.proxy.configure.xml.client.service.agents;
 
 import tech.pcloud.proxy.configure.model.Service;
+import tech.pcloud.proxy.configure.model.Status;
 import tech.pcloud.proxy.configure.service.agents.ConfigureModelAgent;
 import tech.pcloud.proxy.configure.xml.client.model.ServiceInfo;
 
@@ -17,7 +18,7 @@ public class XmlServiceInfoModelAgent implements ConfigureModelAgent<Service, Se
         Service service = new Service();
         service.setName(serviceInfo.getName());
         service.setProxyPort(serviceInfo.getProxyPoint());
-        service.setStatus(serviceInfo.getStatus());
+        service.setStatus(Status.valueOf(serviceInfo.getStatus()));
         service.setTargets(xmlServiceHostsInfoModelAgent.toTarget(serviceInfo.getHosts()));
         return service;
     }
@@ -25,7 +26,7 @@ public class XmlServiceInfoModelAgent implements ConfigureModelAgent<Service, Se
     @Override
     public ServiceInfo exchange2Source(Service service) {
         ServiceInfo serviceInfo = new ServiceInfo();
-        serviceInfo.setStatus(service.getStatus());
+        serviceInfo.setStatus(service.getStatus().name());
         serviceInfo.setName(service.getName());
         serviceInfo.setProxyPoint(service.getProxyPort());
         serviceInfo.setHosts(xmlServiceHostsInfoModelAgent.toSource(service.getTargets()));

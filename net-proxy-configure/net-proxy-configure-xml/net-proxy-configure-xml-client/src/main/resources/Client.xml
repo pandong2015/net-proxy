@@ -2,13 +2,13 @@
 <configure>
     <port>9999</port>
     <servers>
-        <server host="" port=""/>
+        <server name="" host="" port=""/>
     </servers>
     <services>
         <service name="name" status="" proxyPort="">
-            <nodes>
-                <node host="" port="" status=""/>
-            </nodes>
+            <Servers>
+                <Server ref="" status=""/>
+            </Servers>
         </service>
     </services>
 </configure>

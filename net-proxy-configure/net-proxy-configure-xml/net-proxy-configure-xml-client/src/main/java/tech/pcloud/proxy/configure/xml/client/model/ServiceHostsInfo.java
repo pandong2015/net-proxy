@@ -12,7 +12,7 @@ import java.util.List;
  * @Author pandong
  * @Date 2019/1/28 16:26
  **/
-@XmlRootElement(name = "Node")
+@XmlRootElement(name = "Servers")
 public class ServiceHostsInfo {
     private List<ServiceHostInfo> hosts = Lists.newArrayList();
 
@@ -22,7 +22,7 @@ public class ServiceHostsInfo {
     public List<ServiceHostInfo> getHosts() {
         return hosts;
     }
-    @XmlElement(name = "Host")
+    @XmlElement(name = "Servers")
     public void setHosts(List<ServiceHostInfo> hosts) {
         this.hosts = hosts;
     }

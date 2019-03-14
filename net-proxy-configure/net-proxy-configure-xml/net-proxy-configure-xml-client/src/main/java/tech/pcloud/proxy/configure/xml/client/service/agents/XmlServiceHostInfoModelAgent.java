@@ -2,6 +2,7 @@ package tech.pcloud.proxy.configure.xml.client.service.agents;
 
 import tech.pcloud.proxy.configure.model.ProxyTarget;
 import tech.pcloud.proxy.configure.model.Server;
+import tech.pcloud.proxy.configure.model.Status;
 import tech.pcloud.proxy.configure.service.agents.ConfigureModelAgent;
 import tech.pcloud.proxy.configure.xml.client.model.ServiceHostInfo;
 
@@ -14,20 +15,16 @@ public class XmlServiceHostInfoModelAgent implements ConfigureModelAgent<ProxyTa
     @Override
     public ProxyTarget exchage2Target(ServiceHostInfo serviceHostInfo) {
         ProxyTarget proxyTarget = new ProxyTarget();
-        proxyTarget.setStatus(serviceHostInfo.getStatus());
-        Server server = new Server();
-        server.setPort(serviceHostInfo.getPort());
-        server.setHost(serviceHostInfo.getHost());
-        proxyTarget.setProxyServer(server);
+        proxyTarget.setStatus(Status.valueOf(serviceHostInfo.getStatus()));
+        proxyTarget.setServerName(serviceHostInfo.getName());
         return proxyTarget;
     }
 
     @Override
     public ServiceHostInfo exchange2Source(ProxyTarget proxyTarget) {
         ServiceHostInfo serviceHostInfo = new ServiceHostInfo();
-        serviceHostInfo.setStatus(proxyTarget.getStatus());
-        serviceHostInfo.setPort(proxyTarget.getProxyServer().getPort());
-        serviceHostInfo.setHost(proxyTarget.getProxyServer().getHost());
+        serviceHostInfo.setStatus(proxyTarget.getStatus().name());
+        serviceHostInfo.setName(proxyTarget.getServerName());
         return serviceHostInfo;
     }
 }
