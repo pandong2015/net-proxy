@@ -1,17 +1,15 @@
 package tech.pcloud.proxy.network.server.utils;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.configure.service.ClientSelector;
 import tech.pcloud.proxy.network.core.NetworkModel;
-import tech.pcloud.proxy.network.core.protocol.Operation;
-import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
 import tech.pcloud.proxy.network.server.ProxyServer;
+import tech.pcloud.proxy.network.server.model.ClientChannelPair;
+import tech.pcloud.proxy.network.server.model.ServiceStatus;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +20,7 @@ import java.util.Map;
 public enum ServerCache {
     INSTANCE;
 
-    private Map<Client, Channel> clientChannelMapping = Maps.newConcurrentMap();
+    private Map<Long, ClientChannelPair> clientChannelMapping = Maps.newConcurrentMap();
     private Map<Integer, ProxyServer> proxyServerMapping = Maps.newConcurrentMap();
     private Map<Long, Channel> proxyChannelMapping = Maps.newConcurrentMap();
     private Map<Integer, ClientSelector> servicePortClientsMapping = Maps.newConcurrentMap();
@@ -38,7 +36,7 @@ public enum ServerCache {
     }
 
     public void addClientChannelMapping(Client client, Channel channel) {
-        clientChannelMapping.put(client, channel);
+        clientChannelMapping.put(client.getId(), new ClientChannelPair(client, channel));
     }
 
     public void delService(Service service, Client client) {
@@ -52,12 +50,29 @@ public enum ServerCache {
     }
 
     public void delClient(Client client) {
-        clientChannelMapping.remove(client);
-        client.getServices().forEach(s -> delService(s, client));
+        delClient(client.getId());
     }
 
-    public void addClientServiceMapping(Service service, Client client) {
-        if (clientChannelMapping.containsKey(client)) {
+    public void delClient(long clientId) {
+        if (clientChannelMapping.containsKey(clientId)) {
+            ClientChannelPair clientChannelPair = clientChannelMapping.get(clientId);
+            clientChannelPair.getServices().values().forEach(s -> delService(s.getService(), clientChannelPair.getClient()));
+        }
+    }
+
+    public void changeServiceProxyPortStatus(Service service, boolean openProxyPortStatus) {
+        ClientSelector clientSelector = servicePortClientsMapping.get(service.getProxyPort());
+        if (clientSelector == null) {
+            return;
+        }
+        clientSelector.clients().forEach(c -> {
+            setClientServiceProxyPortStatus(c.getId(), service, openProxyPortStatus);
+        });
+    }
+
+    public void addClientServiceMapping(long clientId, Service service) {
+        if (clientChannelMapping.containsKey(clientId)) {
+            Client client = getClientWithId(clientId);
             servicePortMapping.put(service.getProxyPort(), service);
             ClientSelector clientSelector = servicePortClientsMapping.get(service.getProxyPort());
             if (clientSelector == null) {
@@ -76,19 +91,57 @@ public enum ServerCache {
         }
     }
 
-    public Client getClient(int port) {
+    public Client getClientWithPort(int port) {
         return servicePortClientsMapping.get(port).next();
     }
 
+    public Client getClientWithId(long clientId) {
+        if (clientChannelMapping.containsKey(clientId)) {
+            return clientChannelMapping.get(clientId).getClient();
+        }
+        return null;
+    }
+
+    public void setClientServiceProxyPortStatus(long clientId, Service service, boolean serviceProxyPortStatus) {
+        ServiceStatus serviceStatus = getClientServiceStatus(clientId, service);
+        if (serviceStatus != null) {
+            serviceStatus.setOpenProxyPort(serviceProxyPortStatus);
+        }
+    }
+
+    public ServiceStatus getClientServiceStatus(long clientId, Service service) {
+        if (clientChannelMapping.containsKey(clientId)) {
+            ClientChannelPair clientChannelPair = clientChannelMapping.get(clientId);
+            return clientChannelPair.getService(service.getName());
+        }
+        return null;
+    }
+
+    public boolean checkClientServiceStatus(long clientId, Service service) {
+        if (clientChannelMapping.containsKey(clientId)) {
+            ClientChannelPair clientChannelPair = clientChannelMapping.get(clientId);
+            return clientChannelPair.hasService(service.getName())
+                    && clientChannelPair.getService(service.getName()).isOpenProxyPort();
+        }
+        return false;
+    }
+
     public Channel getClientChannel(int port) {
-        return getClientChannel(getClient(port));
+        return getClientChannel(getClientWithPort(port));
     }
 
     public Channel getClientChannel(Client client) {
         if (client == null) {
             return null;
         }
-        return clientChannelMapping.get(client);
+        return getClientChannel(client);
+    }
+
+    public Channel getClientChannel(long clientId) {
+        if (clientChannelMapping.containsKey(clientId)) {
+            return clientChannelMapping.get(clientId).getChannel();
+        }
+        return null;
     }
 
     public Service getService(int port) {

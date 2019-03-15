@@ -14,7 +14,7 @@ public interface GetResultContentObject<T> extends GetContentObject<T> {
     default T getContentObject(String content) {
         Result<T> result = JSON.parseObject(content, getContentType());
         if (result.getCode() != 0) {
-            throw new ResponseCommandException("response is error, response code:" + result.getCode());
+            throw new ResponseCommandException("response is error, response code:" + result.getCode() + ", response message: " + result.getMessage());
         }
         return result.getData();
     }

@@ -16,6 +16,7 @@ import java.util.Set;
  **/
 @Data
 public class ClientConfig {
+    private long id;
     private int port;
     private List<Service> services;
     private List<Server> servers;

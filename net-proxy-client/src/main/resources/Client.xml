@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configure>
+    <Id></Id>
     <Port>9999</Port>
     <Servers>
         <Server name="local" host="127.0.0.1" port="9550"/>

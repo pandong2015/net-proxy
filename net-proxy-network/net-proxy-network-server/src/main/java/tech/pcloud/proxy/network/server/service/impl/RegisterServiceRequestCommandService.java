@@ -2,7 +2,10 @@ package tech.pcloud.proxy.network.server.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.Channel;
+import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.model.Service;
+import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.core.service.CommandService;
 import tech.pcloud.proxy.network.core.service.adaptors.GetObjectContentObject;
@@ -10,6 +13,10 @@ import tech.pcloud.proxy.network.core.service.adaptors.GetNormalOperation;
 import tech.pcloud.proxy.network.core.service.adaptors.GetRequestType;
 import tech.pcloud.proxy.network.core.service.adaptors.GetServiceNodeType;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
+import tech.pcloud.proxy.network.server.exceptions.NetworkServerNoClientException;
+import tech.pcloud.proxy.network.server.model.ServiceStatus;
+import tech.pcloud.proxy.network.server.utils.ServerCache;
+import tech.pcloud.proxy.network.server.utils.ServerProtocolHelper;
 
 import java.lang.reflect.Type;
 
@@ -23,9 +30,37 @@ import java.lang.reflect.Type;
 public class RegisterServiceRequestCommandService
         implements CommandService<Service>, GetServiceNodeType, GetRequestType, GetNormalOperation, GetObjectContentObject<Service> {
     @Override
-    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Service content) {
+    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Service content) throws Exception {
 //        getLogger().info("register service success!");
 //        getLogger().debug("request service info:\n{}", content.toJson());
+        try {
+            Client client = ServerCache.INSTANCE.getClientWithId(content.getClientId());
+            if (client == null) {
+                String message = String.format("no client info, clientId[%d] is error,", content.getClientId());
+                getLogger().warn(message);
+                throw new NetworkServerNoClientException(message);
+            }
+            if (!ServerCache.INSTANCE.checkClientServiceStatus(client.getId(), content)) {
+                ServiceStatus serviceStatus = ServerCache.INSTANCE.getClientServiceStatus(client.getId(), content);
+                boolean isRegister = false;
+                if (serviceStatus == null) {// 服务未注册
+                    ServerCache.INSTANCE.addClientServiceMapping(client.getId(), content);
+                    isRegister = true;
+                } else if (!serviceStatus.isOpenProxyPort()) {// 服务已注册，但未打开端口
+                    isRegister = true;
+                }
+
+                if (isRegister) {
+                    Server server = channel.attr(NetworkModel.ChannelAttribute.SERVER).get();
+
+                }
+
+            }
+
+            getLogger().info("register service success!");
+        } catch (NetworkServerNoClientException e) {
+            channel.writeAndFlush(ServerProtocolHelper.createExceptionResponseProtocol(e, content));
+        }
     }
 
     @Override

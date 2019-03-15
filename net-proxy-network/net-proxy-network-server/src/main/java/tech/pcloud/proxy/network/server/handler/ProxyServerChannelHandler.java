@@ -56,7 +56,7 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
             long requestId = IdGenerateService.generate(IdGenerateService.IdType.REQUEST);
             log.debug("create new request, requestId --> " + requestId);
             Channel requestChannel = ctx.channel();
-            Client client = ServerCache.INSTANCE.getClient(port);
+            Client client = ServerCache.INSTANCE.getClientWithPort(port);
             //在client端连接道真实服务前，暂停读取数据
             requestChannel.config().setOption(ChannelOption.AUTO_READ, false);
             //缓存当前channel，在后期传输时使用

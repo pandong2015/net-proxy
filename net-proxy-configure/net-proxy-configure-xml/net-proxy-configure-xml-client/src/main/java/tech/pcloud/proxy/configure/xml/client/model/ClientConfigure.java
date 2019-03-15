@@ -13,7 +13,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ClientConfigure {
     private ServersInfo servers;
     private int port;
+    private long id;
     private ServicesInfo services;
+
+    public long getId() {
+        return id;
+    }
+
+    @XmlElement(name = "Id")
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public int getPort() {
         return port;

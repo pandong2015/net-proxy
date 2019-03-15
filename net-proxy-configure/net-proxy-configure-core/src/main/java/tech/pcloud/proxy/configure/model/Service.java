@@ -14,6 +14,7 @@ import java.util.Objects;
  **/
 @Data
 public class Service extends Node {
+    private long clientId;
     private String name;
     private Status status;
     private Class<? extends ClientSelector> clientSelector;

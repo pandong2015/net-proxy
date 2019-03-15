@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 public class RegisterServiceResponseCommandService
         implements CommandService<Service>, GetServiceNodeType, GetResponseType, GetNormalOperation, GetResultContentObject<Service> {
     @Override
-    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Service content) {
+    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Service content) throws Exception{
         getLogger().info("register service success!");
         getLogger().debug("response service info:\n{}", content.toJson());
     }

@@ -16,6 +16,7 @@ public class XmlClientConfigureModelAgent implements ConfigureModelAgent<ClientC
     @Override
     public ClientConfig exchage2Target(ClientConfigure clientConfigure) {
         ClientConfig clientConfig = new ClientConfig();
+        clientConfig.setId(clientConfigure.getId());
         clientConfig.setPort(clientConfigure.getPort());
         clientConfig.setServices(xmlServicesInfoModelAgent.toTarget(clientConfigure.getServices()));
         clientConfig.setServers(xmlServersInfoModelAgent.toTarget(clientConfigure.getServers()));
@@ -25,6 +26,7 @@ public class XmlClientConfigureModelAgent implements ConfigureModelAgent<ClientC
     @Override
     public ClientConfigure exchange2Source(ClientConfig clientConfig) {
         ClientConfigure clientConfigure = new ClientConfigure();
+        clientConfigure.setId(clientConfig.getId());
         clientConfigure.setPort(clientConfig.getPort());
         clientConfigure.setServices(xmlServicesInfoModelAgent.toSource(clientConfig.getServices()));
         clientConfigure.setServers(xmlServersInfoModelAgent.toSource(clientConfig.getServers()));

@@ -27,10 +27,9 @@ import java.net.InetSocketAddress;
 public class RegisterClientRequestCommandService
         implements CommandService<Client>, GetClientNodeType, GetRequestType, GetNormalOperation, GetObjectContentObject<Client> {
     @Override
-    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Client content) {
+    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Client content) throws Exception{
         getLogger().debug("request client info:{}", content.toJson());
         InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.localAddress();
-        content.setId(IdGenerateService.generate(IdGenerateService.IdType.CLIENT));
         content.setHost(inetSocketAddress.getHostString());
         ServerCache.INSTANCE.addClientChannelMapping(content, channel);
         getLogger().info("register client success!");

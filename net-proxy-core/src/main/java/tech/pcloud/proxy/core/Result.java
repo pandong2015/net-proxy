@@ -12,4 +12,5 @@ import tech.pcloud.proxy.core.model.BaseEntity;
 public class Result<T> extends BaseEntity {
     private int code;
     private T data;
+    private String message;
 }

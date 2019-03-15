@@ -9,6 +9,7 @@ import tech.pcloud.proxy.configure.service.ClientSelector;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName DefaultClientSelect
@@ -45,6 +46,11 @@ public class DefaultClientSelector implements ClientSelector {
     @Override
     public int size() {
         return clients.size();
+    }
+
+    @Override
+    public List<Client> clients() {
+        return clients.values().stream().collect(Collectors.toList());
     }
 
     @Override
