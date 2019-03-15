@@ -33,6 +33,7 @@ public class StartClient {
         }
         clientConfig.getServers().forEach(s -> {
             ClientInfo clientInfo = new ClientInfo();
+            clientInfo.setId(clientConfig.getId());
             clientInfo.setOpenPort(clientConfig.getPort());
             clientInfo.setServer(s);
             clientInfo.setServices(clientConfig.getServices(s));

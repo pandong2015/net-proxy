@@ -3,7 +3,6 @@ package tech.pcloud.proxy.network.server.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.Channel;
 import tech.pcloud.proxy.configure.model.Client;
-import tech.pcloud.proxy.core.service.IdGenerateService;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.core.service.CommandService;
 import tech.pcloud.proxy.network.core.service.adaptors.GetClientNodeType;
@@ -33,7 +32,7 @@ public class RegisterClientRequestCommandService
         content.setHost(inetSocketAddress.getHostString());
         ServerCache.INSTANCE.addClientChannelMapping(content, channel);
         getLogger().info("register client success!");
-        channel.writeAndFlush(ServerProtocolHelper.createRegisterClientResponseProtocol(content));
+        channel.writeAndFlush(ServerProtocolHelper.createRegisterSuccessResponseProtocol(content));
     }
 
     @Override

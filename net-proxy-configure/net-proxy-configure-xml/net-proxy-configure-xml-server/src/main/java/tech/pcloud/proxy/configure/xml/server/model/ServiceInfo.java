@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Service")
 public class ServiceInfo {
     private String name;
-    private int status;
+    private String status;
     private int proxyPort;
 
     public String getName() {
@@ -23,12 +23,12 @@ public class ServiceInfo {
         this.name = name;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
     @XmlAttribute
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

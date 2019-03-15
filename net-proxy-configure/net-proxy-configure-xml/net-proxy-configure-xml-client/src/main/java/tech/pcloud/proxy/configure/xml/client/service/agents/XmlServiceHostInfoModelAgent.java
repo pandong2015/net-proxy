@@ -1,30 +1,29 @@
 package tech.pcloud.proxy.configure.xml.client.service.agents;
 
 import tech.pcloud.proxy.configure.model.ProxyTarget;
-import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.model.Status;
 import tech.pcloud.proxy.configure.service.agents.ConfigureModelAgent;
-import tech.pcloud.proxy.configure.xml.client.model.ServiceHostInfo;
+import tech.pcloud.proxy.configure.xml.client.model.ServiceDeployRefInfo;
 
 /**
  * @ClassName XmlServiceHostInfoModelAgent
  * @Author pandong
  * @Date 2019/1/29 11:42
  **/
-public class XmlServiceHostInfoModelAgent implements ConfigureModelAgent<ProxyTarget, ServiceHostInfo> {
+public class XmlServiceHostInfoModelAgent implements ConfigureModelAgent<ProxyTarget, ServiceDeployRefInfo> {
     @Override
-    public ProxyTarget exchage2Target(ServiceHostInfo serviceHostInfo) {
+    public ProxyTarget exchage2Target(ServiceDeployRefInfo serviceDeployRefInfo) {
         ProxyTarget proxyTarget = new ProxyTarget();
-        proxyTarget.setStatus(Status.valueOf(serviceHostInfo.getStatus()));
-        proxyTarget.setServerName(serviceHostInfo.getName());
+        proxyTarget.setStatus(Status.valueOf(serviceDeployRefInfo.getStatus()));
+        proxyTarget.setServerName(serviceDeployRefInfo.getName());
         return proxyTarget;
     }
 
     @Override
-    public ServiceHostInfo exchange2Source(ProxyTarget proxyTarget) {
-        ServiceHostInfo serviceHostInfo = new ServiceHostInfo();
-        serviceHostInfo.setStatus(proxyTarget.getStatus().name());
-        serviceHostInfo.setName(proxyTarget.getServerName());
-        return serviceHostInfo;
+    public ServiceDeployRefInfo exchange2Source(ProxyTarget proxyTarget) {
+        ServiceDeployRefInfo serviceDeployRefInfo = new ServiceDeployRefInfo();
+        serviceDeployRefInfo.setStatus(proxyTarget.getStatus().name());
+        serviceDeployRefInfo.setName(proxyTarget.getServerName());
+        return serviceDeployRefInfo;
     }
 }

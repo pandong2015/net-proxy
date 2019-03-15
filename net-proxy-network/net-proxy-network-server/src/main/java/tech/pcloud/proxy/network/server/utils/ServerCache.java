@@ -3,6 +3,7 @@ package tech.pcloud.proxy.network.server.utils;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.configure.service.ClientSelector;
 import tech.pcloud.proxy.network.core.NetworkModel;
@@ -20,11 +21,20 @@ import java.util.Map;
 public enum ServerCache {
     INSTANCE;
 
+    private Server server;
     private Map<Long, ClientChannelPair> clientChannelMapping = Maps.newConcurrentMap();
     private Map<Integer, ProxyServer> proxyServerMapping = Maps.newConcurrentMap();
     private Map<Long, Channel> proxyChannelMapping = Maps.newConcurrentMap();
     private Map<Integer, ClientSelector> servicePortClientsMapping = Maps.newConcurrentMap();
     private Map<Integer, Service> servicePortMapping = Maps.newConcurrentMap();
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
 
     public void addProxyChannelMapping(long requestId, Service service, Client client, Channel channel) {
         proxyChannelMapping.put(requestId, channel);

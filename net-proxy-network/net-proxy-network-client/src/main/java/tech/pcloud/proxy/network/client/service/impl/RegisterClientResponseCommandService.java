@@ -30,7 +30,7 @@ import java.net.InetSocketAddress;
 public class RegisterClientResponseCommandService
         implements CommandService<Client>, GetClientNodeType, GetResponseType, GetNormalOperation, GetResultContentObject<Client> {
     @Override
-    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Client content) throws Exception{
+    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Client content) throws Exception {
         getLogger().debug("response client info:{}", content.toJson());
         InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.localAddress();
         ClientInfo clientInfo = ClientCache.getClientInfoWithPort(inetSocketAddress.getPort());
@@ -38,6 +38,7 @@ public class RegisterClientResponseCommandService
             clientInfo.setId(content.getId());
             getLogger().info("register client success, client id : [{}]!", content.getId());
             clientInfo.getServices().forEach(service -> {
+                service.setClientId(clientInfo.getId());
                 channel.writeAndFlush(ClientProtocolHelper.createRegisterServiceRequestProtocol(service)).addListener(new ChannelFutureListener() {
 
                     @Override

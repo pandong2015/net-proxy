@@ -16,19 +16,19 @@ import tech.pcloud.proxy.network.protocol.ProtocolPackage;
  **/
 public class ClientProtocolHelper {
 
-    public static <T extends ToJson> ProtocolPackage.Protocol createClientRegistorRequestBody(T t){
+    public static <T extends ToJson> ProtocolPackage.Protocol createClientRegistorRequestBody(NodeType nodeType, T t){
         ManageProtocolBody<T> body = new ManageProtocolBody();
-        body.setCommand(ProtocolCommand.newInstance(NodeType.CLIENT, ProtocolCommand.Command.REGISTER));
+        body.setCommand(ProtocolCommand.newInstance(nodeType, ProtocolCommand.Command.REGISTER));
         body.setData(t);
         return ProtocolHelper.createNormalRequestProtocol(body);
     }
 
     public static ProtocolPackage.Protocol createRegisterServiceRequestProtocol(Service service){
-        return createClientRegistorRequestBody(service);
+        return createClientRegistorRequestBody(NodeType.SERVICE, service);
     }
 
     public static ProtocolPackage.Protocol createRegisterClientRequestProtocol(Client client) {
-        return createClientRegistorRequestBody(client);
+        return createClientRegistorRequestBody(NodeType.CLIENT, client);
     }
 
     public static ProtocolPackage.Protocol createHeartBeatRequestProtocol() {

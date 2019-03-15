@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @Date 2019/1/28 16:26
  **/
 @XmlRootElement(name = "Ref")
-public class ServiceHostInfo {
+public class ServiceDeployRefInfo {
     private String name;
     private String status;
 

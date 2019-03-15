@@ -38,9 +38,9 @@ public class ProxyServer {
     public void init() {
         proxy = new ServerBootstrap();
         proxy.group(masterGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
                 .attr(NetworkModel.ChannelAttribute.SERVICE, service)
                 .attr(NetworkModel.ChannelAttribute.SERVER, server)
+                .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
 
                     @Override

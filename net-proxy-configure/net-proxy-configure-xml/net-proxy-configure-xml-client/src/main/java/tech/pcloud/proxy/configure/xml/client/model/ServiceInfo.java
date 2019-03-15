@@ -14,12 +14,12 @@ public class ServiceInfo {
     private String name;
     private String status;
     private int proxyPoint;
-    private ServiceHostsInfo hosts;
+    private ServiceDeployInfo deploy;
 
     public String getName() {
         return name;
     }
-    @XmlAttribute
+    @XmlAttribute(name = "name")
     public void setName(String name) {
         this.name = name;
     }
@@ -27,7 +27,7 @@ public class ServiceInfo {
     public String getStatus() {
         return status;
     }
-    @XmlAttribute
+    @XmlAttribute(name = "status")
     public void setStatus(String status) {
         this.status = status;
     }
@@ -35,17 +35,17 @@ public class ServiceInfo {
     public int getProxyPoint() {
         return proxyPoint;
     }
-    @XmlAttribute
+    @XmlAttribute(name = "proxyPort")
     public void setProxyPoint(int proxyPoint) {
         this.proxyPoint = proxyPoint;
     }
 
-    public ServiceHostsInfo getHosts() {
-        return hosts;
+    public ServiceDeployInfo getDeploy() {
+        return deploy;
     }
-    @XmlElement(name = "Servers")
-    public void setHosts(ServiceHostsInfo hosts) {
-        this.hosts = hosts;
+    @XmlElement(name = "Deploy")
+    public void setDeploy(ServiceDeployInfo deploy) {
+        this.deploy = deploy;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ServiceInfo {
                 "name='" + name + '\'' +
                 ", status=" + status +
                 ", proxyPoint=" + proxyPoint +
-                ", hosts=" + hosts +
+                ", deploy=" + deploy +
                 '}';
     }
 }

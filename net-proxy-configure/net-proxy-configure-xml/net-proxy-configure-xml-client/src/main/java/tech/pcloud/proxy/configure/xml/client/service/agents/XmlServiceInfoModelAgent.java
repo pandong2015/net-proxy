@@ -19,7 +19,7 @@ public class XmlServiceInfoModelAgent implements ConfigureModelAgent<Service, Se
         service.setName(serviceInfo.getName());
         service.setProxyPort(serviceInfo.getProxyPoint());
         service.setStatus(Status.valueOf(serviceInfo.getStatus()));
-        service.setTargets(xmlServiceHostsInfoModelAgent.toTarget(serviceInfo.getHosts()));
+        service.setTargets(xmlServiceHostsInfoModelAgent.toTarget(serviceInfo.getDeploy()));
         return service;
     }
 
@@ -29,7 +29,7 @@ public class XmlServiceInfoModelAgent implements ConfigureModelAgent<Service, Se
         serviceInfo.setStatus(service.getStatus().name());
         serviceInfo.setName(service.getName());
         serviceInfo.setProxyPoint(service.getProxyPort());
-        serviceInfo.setHosts(xmlServiceHostsInfoModelAgent.toSource(service.getTargets()));
+        serviceInfo.setDeploy(xmlServiceHostsInfoModelAgent.toSource(service.getTargets()));
         return serviceInfo;
     }
 }

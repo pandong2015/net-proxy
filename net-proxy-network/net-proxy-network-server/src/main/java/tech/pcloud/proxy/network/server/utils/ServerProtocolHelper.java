@@ -24,10 +24,10 @@ public class ServerProtocolHelper {
         return ProtocolHelper.createNormalResponseProtocol(body);
     }
 
-    public static ProtocolPackage.Protocol createRegisterClientResponseProtocol(Client client) {
+    public static <T> ProtocolPackage.Protocol createRegisterSuccessResponseProtocol(T t) {
         ManageProtocolBody body = new ManageProtocolBody();
         body.setCommand(ProtocolCommand.newInstance(NodeType.CLIENT, ProtocolCommand.Command.REGISTER));
-        body.setData(ResultGenerate.successResult(client));
+        body.setData(ResultGenerate.successResult(t));
         return ProtocolHelper.createNormalResponseProtocol(body);
     }
 

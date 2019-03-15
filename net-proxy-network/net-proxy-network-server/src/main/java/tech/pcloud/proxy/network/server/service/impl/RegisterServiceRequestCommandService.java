@@ -13,6 +13,7 @@ import tech.pcloud.proxy.network.core.service.adaptors.GetNormalOperation;
 import tech.pcloud.proxy.network.core.service.adaptors.GetRequestType;
 import tech.pcloud.proxy.network.core.service.adaptors.GetServiceNodeType;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
+import tech.pcloud.proxy.network.server.ProxyServer;
 import tech.pcloud.proxy.network.server.exceptions.NetworkServerNoClientException;
 import tech.pcloud.proxy.network.server.model.ServiceStatus;
 import tech.pcloud.proxy.network.server.utils.ServerCache;
@@ -31,8 +32,6 @@ public class RegisterServiceRequestCommandService
         implements CommandService<Service>, GetServiceNodeType, GetRequestType, GetNormalOperation, GetObjectContentObject<Service> {
     @Override
     public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Service content) throws Exception {
-//        getLogger().info("register service success!");
-//        getLogger().debug("request service info:\n{}", content.toJson());
         try {
             Client client = ServerCache.INSTANCE.getClientWithId(content.getClientId());
             if (client == null) {
@@ -51,12 +50,15 @@ public class RegisterServiceRequestCommandService
                 }
 
                 if (isRegister) {
-                    Server server = channel.attr(NetworkModel.ChannelAttribute.SERVER).get();
-
+                    getLogger().info("init proxy server with service[{}]", content.getName());
+                    Server server = channel.parent().attr(NetworkModel.ChannelAttribute.SERVER).get();
+                    ProxyServer proxyServer = new ProxyServer(server, content);
+                    proxyServer.init();
+                    ServerCache.INSTANCE.addProxyServerMapping(content.getProxyPort(), proxyServer);
                 }
 
             }
-
+            channel.writeAndFlush(ServerProtocolHelper.createRegisterSuccessResponseProtocol(content));
             getLogger().info("register service success!");
         } catch (NetworkServerNoClientException e) {
             channel.writeAndFlush(ServerProtocolHelper.createExceptionResponseProtocol(e, content));

@@ -13,6 +13,7 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.framework.netty.handler.DHSecurityCodecHandler;
+import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.service.Initializer;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 import tech.pcloud.proxy.network.server.handler.ServerProtocolChannelHandler;
@@ -40,6 +41,7 @@ public class Server implements Initializer {
         masterGroup = new NioEventLoopGroup(server.getMasterPoolSize());
         workerGroup = new NioEventLoopGroup(server.getWorkerPoolSize());
         bootstrap.group(masterGroup, workerGroup)
+                .attr(NetworkModel.ChannelAttribute.SERVER, server)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 100)
                 .childHandler(new ChannelInitializer<SocketChannel>() {

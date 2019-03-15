@@ -7,9 +7,9 @@
     </Servers>
     <Services>
         <Service name="callback" status="NORMAL" proxyPort="10010">
-            <Servers>
+            <Deploy>
                 <Ref name="local" status="NORMAL" />
-            </Servers>
+            </Deploy>
         </Service>
     </Services>
 </Configure>

@@ -100,6 +100,7 @@ public class Client implements Initializer {
     private void register() {
         int port = currentChannel.attr(NetworkModel.ChannelAttribute.PORT).get();
         tech.pcloud.proxy.configure.model.Client client = new tech.pcloud.proxy.configure.model.Client();
+        client.setId(clientInfo.getId());
         client.setPort(port);
         log.debug("register client, {}", client);
         ChannelFuture future = currentChannel.writeAndFlush(ClientProtocolHelper.createRegisterClientRequestProtocol(client));
