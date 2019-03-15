@@ -3,6 +3,7 @@ package tech.pcloud.proxy.network.server.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.Channel;
 import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.NodeType;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.core.service.CommandService;
 import tech.pcloud.proxy.network.core.service.adaptors.GetClientNodeType;
@@ -26,13 +27,13 @@ import java.net.InetSocketAddress;
 public class RegisterClientRequestCommandService
         implements CommandService<Client>, GetClientNodeType, GetRequestType, GetNormalOperation, GetObjectContentObject<Client> {
     @Override
-    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Client content) throws Exception{
+    public void execCommand(ProtocolPackage.Operation operation, ProtocolCommand command, Channel channel, Client content) throws Exception {
         getLogger().debug("request client info:{}", content.toJson());
         InetSocketAddress inetSocketAddress = (InetSocketAddress) channel.localAddress();
         content.setHost(inetSocketAddress.getHostString());
         ServerCache.INSTANCE.addClientChannelMapping(content, channel);
         getLogger().info("register client success!");
-        channel.writeAndFlush(ServerProtocolHelper.createRegisterSuccessResponseProtocol(content));
+        channel.writeAndFlush(ServerProtocolHelper.createRegisterSuccessResponseProtocol(NodeType.CLIENT, content));
     }
 
     @Override

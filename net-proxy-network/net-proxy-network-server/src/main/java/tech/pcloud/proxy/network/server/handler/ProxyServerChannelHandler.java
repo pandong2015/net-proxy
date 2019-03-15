@@ -46,9 +46,9 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         InetSocketAddress inetSocketAddress = (InetSocketAddress) ctx.channel().localAddress();
         int port = inetSocketAddress.getPort();
-        Channel proxyChannel = ServerCache.INSTANCE.getClientChannel(port);
+        Channel clientChannel = ServerCache.INSTANCE.getClientChannel(port);
         Service service = ServerCache.INSTANCE.getService(port);
-        if (proxyChannel == null) {
+        if (clientChannel == null) {
             //没有client端的连接
             ctx.channel().close();
         } else {
@@ -60,11 +60,11 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
             //在client端连接道真实服务前，暂停读取数据
             requestChannel.config().setOption(ChannelOption.AUTO_READ, false);
             //缓存当前channel，在后期传输时使用
-            ServerCache.INSTANCE.addProxyChannelMapping(requestId, service, client, requestChannel);
+            ServerCache.INSTANCE.addProxyChannelMapping(requestId, service, client, requestChannel, clientChannel);
             // 通知client准备传输
             Map<String, String> headers = Maps.newHashMap();
             headers.put(NetworkModel.ChannelAttributeName.REQUEST_ID, String.valueOf(requestId));
-            proxyChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.REQUEST.ordinal(), headers, service.toJson()));
+            clientChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.REQUEST.ordinal(), headers, service.toJson()));
         }
         super.channelActive(ctx);
     }

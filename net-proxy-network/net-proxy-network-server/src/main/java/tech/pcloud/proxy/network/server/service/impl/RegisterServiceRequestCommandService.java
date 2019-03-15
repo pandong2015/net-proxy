@@ -3,6 +3,7 @@ package tech.pcloud.proxy.network.server.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.Channel;
 import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.NodeType;
 import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.network.core.NetworkModel;
@@ -58,7 +59,7 @@ public class RegisterServiceRequestCommandService
                 }
 
             }
-            channel.writeAndFlush(ServerProtocolHelper.createRegisterSuccessResponseProtocol(content));
+            channel.writeAndFlush(ServerProtocolHelper.createRegisterSuccessResponseProtocol(NodeType.SERVICE, content));
             getLogger().info("register service success!");
         } catch (NetworkServerNoClientException e) {
             channel.writeAndFlush(ServerProtocolHelper.createExceptionResponseProtocol(e, content));

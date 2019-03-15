@@ -24,9 +24,9 @@ public class ServerProtocolHelper {
         return ProtocolHelper.createNormalResponseProtocol(body);
     }
 
-    public static <T> ProtocolPackage.Protocol createRegisterSuccessResponseProtocol(T t) {
+    public static <T> ProtocolPackage.Protocol createRegisterSuccessResponseProtocol(NodeType nodeType, T t) {
         ManageProtocolBody body = new ManageProtocolBody();
-        body.setCommand(ProtocolCommand.newInstance(NodeType.CLIENT, ProtocolCommand.Command.REGISTER));
+        body.setCommand(ProtocolCommand.newInstance(nodeType, ProtocolCommand.Command.REGISTER));
         body.setData(ResultGenerate.successResult(t));
         return ProtocolHelper.createNormalResponseProtocol(body);
     }
