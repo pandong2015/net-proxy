@@ -36,7 +36,7 @@ public class RequestConnectResponseService
         }
         getLogger().info("begin connect service...");
         ProxyClient proxyClient = new ProxyClient(content);
-        proxyClient.connect(requestId, channel);
+        proxyClient.connect(requestId);
     }
 
     @Override

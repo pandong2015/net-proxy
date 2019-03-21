@@ -1,6 +1,7 @@
 package tech.pcloud.proxy.network.client;
 
 import io.netty.channel.Channel;
+import tech.pcloud.proxy.network.client.model.ClientInfo;
 
 import java.net.InetSocketAddress;
 
@@ -9,5 +10,5 @@ import java.net.InetSocketAddress;
  * created by pando on 2019/3/21 0021 11:09
  */
 public interface Transfer {
-    void transmit(Channel channel, InetSocketAddress inetSocketAddress);
+    void transmit(Channel channel, InetSocketAddress localSocketAddress, ClientInfo clientInfo);
 }

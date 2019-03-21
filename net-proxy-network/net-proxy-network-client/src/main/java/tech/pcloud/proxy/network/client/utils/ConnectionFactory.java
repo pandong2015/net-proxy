@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.network.client.Transfer;
+import tech.pcloud.proxy.network.client.model.ClientInfo;
 
 import java.net.InetSocketAddress;
 
@@ -29,7 +30,8 @@ public class ConnectionFactory {
                             if (connectionFactoryConfig.getTransfer() != null) {
                                 Channel currentChannel = channelFuture.channel();
                                 InetSocketAddress inetSocketAddress = (InetSocketAddress) currentChannel.localAddress();
-                                connectionFactoryConfig.getTransfer().transmit(currentChannel, inetSocketAddress);
+                                ClientInfo clientInfo = ClientCache.getClientInfoWithPort(inetSocketAddress.getPort());
+                                connectionFactoryConfig.getTransfer().transmit(currentChannel, inetSocketAddress, clientInfo);
                                 log.info("transmit data success.");
                             }
                         } else {

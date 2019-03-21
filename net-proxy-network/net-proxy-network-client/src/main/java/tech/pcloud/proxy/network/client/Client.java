@@ -18,6 +18,7 @@ import tech.pcloud.proxy.network.core.service.Initializer;
 import tech.pcloud.proxy.network.core.service.impl.DefaultCommandServiceFactory;
 
 import java.net.InetSocketAddress;
+import java.util.Random;
 
 /**
  * @ClassName Client
@@ -42,6 +43,10 @@ public class Client implements Initializer {
         this.commandServiceFactory = commandServiceFactory;
     }
 
+    public CommandServiceFactory getCommandServiceFactory() {
+        return commandServiceFactory;
+    }
+
     @Override
     public void init() {
         bootstrap = BootstrapFactory.newInstance(
@@ -52,7 +57,16 @@ public class Client implements Initializer {
                         .build());
         if (clientInfo.getOpenPort() > 0) {
             bootstrap.localAddress(clientInfo.getOpenPort());
+        } else {
+            Random random = new Random();
+            int port = 0;
+            while ((port = random.nextInt(60000)) <= 10000) {
+
+            }
+            clientInfo.setOpenPort(port);
         }
+
+        ClientCache.mappingClientInfoWithPort(clientInfo.getOpenPort(), clientInfo);
         Server server = clientInfo.getServer();
 
         ConnectionFactory.connect(ConnectionFactory.ConnectionFactoryConfig.builder()
@@ -61,16 +75,15 @@ public class Client implements Initializer {
                 .port(server.getPort())
                 .transfer(new Transfer() {
                     @Override
-                    public void transmit(Channel channel, InetSocketAddress inetSocketAddress) {
+                    public void transmit(Channel channel, InetSocketAddress localSocketAddress, ClientInfo clientInfo) {
                         currentChannel = channel;
                         channel.attr(NetworkModel.ChannelAttribute.SERVER).set(server);
-                        channel.attr(NetworkModel.ChannelAttribute.PORT).set(inetSocketAddress.getPort());
-                        ClientCache.mappingClientInfoWithPort(inetSocketAddress.getPort(), clientInfo);
-                        log.info("connect server[{}:{}] success, bind port: {}", server.getHost(), server.getPort(), inetSocketAddress.getPort());
+                        channel.attr(NetworkModel.ChannelAttribute.PORT).set(localSocketAddress.getPort());
+                        log.info("connect server[{}:{}] success, bind port: {}", server.getHost(), server.getPort(), localSocketAddress.getPort());
 
                         tech.pcloud.proxy.configure.model.Client client = new tech.pcloud.proxy.configure.model.Client();
                         client.setId(clientInfo.getId());
-                        client.setPort(inetSocketAddress.getPort());
+                        client.setPort(localSocketAddress.getPort());
                         log.debug("register client, {}", client);
                         channel.writeAndFlush(ClientProtocolHelper.createRegisterClientRequestProtocol(client))
                                 .addListener(new ChannelFutureListener() {
