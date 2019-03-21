@@ -29,9 +29,10 @@ public class ConnectionFactory {
                             log.info("connect {}:{} success.", connectionFactoryConfig.getHost(), connectionFactoryConfig.getPort());
                             if (connectionFactoryConfig.getTransfer() != null) {
                                 Channel currentChannel = channelFuture.channel();
-                                InetSocketAddress inetSocketAddress = (InetSocketAddress) currentChannel.localAddress();
-                                ClientInfo clientInfo = ClientCache.getClientInfoWithPort(inetSocketAddress.getPort());
-                                connectionFactoryConfig.getTransfer().transmit(currentChannel, inetSocketAddress, clientInfo);
+                                InetSocketAddress localSocketAddress = (InetSocketAddress) currentChannel.localAddress();
+                                InetSocketAddress remoteSocketAddress = (InetSocketAddress) currentChannel.remoteAddress();
+                                ClientInfo clientInfo = ClientCache.getClientInfoWithPort(localSocketAddress.getPort());
+                                connectionFactoryConfig.getTransfer().transmit(currentChannel, localSocketAddress, remoteSocketAddress, clientInfo);
                                 log.info("transmit data success.");
                             }
                         } else {

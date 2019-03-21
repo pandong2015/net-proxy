@@ -75,7 +75,7 @@ public class Client implements Initializer {
                 .port(server.getPort())
                 .transfer(new Transfer() {
                     @Override
-                    public void transmit(Channel channel, InetSocketAddress localSocketAddress, ClientInfo clientInfo) {
+                    public void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo) {
                         currentChannel = channel;
                         channel.attr(NetworkModel.ChannelAttribute.SERVER).set(server);
                         channel.attr(NetworkModel.ChannelAttribute.PORT).set(localSocketAddress.getPort());

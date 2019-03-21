@@ -10,5 +10,5 @@ import java.net.InetSocketAddress;
  * created by pando on 2019/3/21 0021 11:09
  */
 public interface Transfer {
-    void transmit(Channel channel, InetSocketAddress localSocketAddress, ClientInfo clientInfo);
+    void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo);
 }

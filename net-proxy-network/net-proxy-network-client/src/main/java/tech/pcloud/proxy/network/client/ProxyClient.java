@@ -57,7 +57,7 @@ public class ProxyClient implements Initializer {
                 .port(service.getPort())
                 .transfer(new Transfer() {
                     @Override
-                    public void transmit(Channel channel, InetSocketAddress localSocketAddress, ClientInfo clientInfo) {
+                    public void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo) {
                         final Channel serviceChannel = channel;
                         log.debug("begin create new connection to proxy server...");
                         ConnectionFactory.connect(ConnectionFactory.ConnectionFactoryConfig.builder()
@@ -70,7 +70,7 @@ public class ProxyClient implements Initializer {
                                 .port(clientInfo.getServer().getPort())
                                 .transfer(new Transfer() {
                                     @Override
-                                    public void transmit(Channel channel, InetSocketAddress localSocketAddress, ClientInfo clientInfo) {
+                                    public void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo) {
                                         //绑定两个channel，用于后续传输数据
                                         channel.attr(NetworkModel.ChannelAttribute.PROXY_SERVICE_CHANNEL).set(serviceChannel);
                                         serviceChannel.attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).set(channel);
