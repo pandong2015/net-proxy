@@ -1,8 +1,6 @@
 package tech.pcloud.proxy.network.client.utils;
 
 import com.google.common.collect.Maps;
-import tech.pcloud.proxy.configure.model.Server;
-import tech.pcloud.proxy.network.client.Client;
 import tech.pcloud.proxy.network.client.model.ClientInfo;
 
 import java.util.Map;

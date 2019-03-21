@@ -19,7 +19,7 @@ public class ClientConfig {
     private long id;
     private int port;
     private List<Service> services;
-    private List<Server> servers;
+    private Server server;
 
     public List<Service> getServices(Server server) {
         if (services == null || services.isEmpty()) {

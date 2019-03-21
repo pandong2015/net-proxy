@@ -2,9 +2,7 @@
 <Configure>
     <Id></Id>
     <Port>9999</Port>
-    <Servers>
-        <Server name="local" host="127.0.0.1" port="9550"/>
-    </Servers>
+    <Server name="local" host="127.0.0.1" port="9550"/>
     <Services>
         <Service name="callback" status="NORMAL" proxyPort="10010">
             <Deploy>

@@ -16,10 +16,15 @@ import tech.pcloud.proxy.network.protocol.ProtocolPackage;
  **/
 public class ClientProtocolHelper {
 
-    public static <T extends ToJson> ProtocolPackage.Protocol createClientRegistorRequestBody(NodeType nodeType, T t){
+    public static <T extends ToJson> ManageProtocolBody createRegistorRequestBody(NodeType nodeType, T t){
         ManageProtocolBody<T> body = new ManageProtocolBody();
         body.setCommand(ProtocolCommand.newInstance(nodeType, ProtocolCommand.Command.REGISTER));
         body.setData(t);
+        return body;
+    }
+
+    public static <T extends ToJson> ProtocolPackage.Protocol createClientRegistorRequestBody(NodeType nodeType, T t){
+        ManageProtocolBody<T> body = createRegistorRequestBody(nodeType, t);
         return ProtocolHelper.createNormalRequestProtocol(body);
     }
 

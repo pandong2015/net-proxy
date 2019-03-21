@@ -25,6 +25,7 @@ public class NetworkModel implements Model {
         String REQUEST_ID = "requestId";
         String PROXY_SERVER_CHANNEL = "proxyChannel";
         String PROXY_REQUEST_CHANNEL = "requestChannel";
+        String PROXY_SERVICE_CHANNEL = "requestServiceChannel";
         String SERVER = "server";
         String SERVICE = "service";
         String CLIENT = "client";
@@ -38,6 +39,7 @@ public class NetworkModel implements Model {
         AttributeKey<Long> REQUEST_ID = AttributeKey.newInstance(ChannelAttributeName.REQUEST_ID);
         AttributeKey<Channel> PROXY_SERVER_CHANNEL = AttributeKey.newInstance(ChannelAttributeName.PROXY_SERVER_CHANNEL);
         AttributeKey<Channel> PROXY_REQUEST_CHANNEL = AttributeKey.newInstance(ChannelAttributeName.PROXY_REQUEST_CHANNEL);
+        AttributeKey<Channel> PROXY_SERVICE_CHANNEL = AttributeKey.newInstance(ChannelAttributeName.PROXY_SERVICE_CHANNEL);
         AttributeKey<Server> SERVER = AttributeKey.newInstance(ChannelAttributeName.SERVER);
         AttributeKey<Service> SERVICE = AttributeKey.newInstance(ChannelAttributeName.SERVICE);
         AttributeKey<Client> CLIENT = AttributeKey.newInstance(ChannelAttributeName.CLIENT);

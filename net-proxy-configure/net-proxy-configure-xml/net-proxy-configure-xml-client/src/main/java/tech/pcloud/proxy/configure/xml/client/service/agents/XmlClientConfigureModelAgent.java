@@ -10,7 +10,7 @@ import tech.pcloud.proxy.configure.xml.client.model.ClientConfigure;
  * @Date 2019/1/29 11:01
  **/
 public class XmlClientConfigureModelAgent implements ConfigureModelAgent<ClientConfig, ClientConfigure> {
-    private XmlServersInfoModelAgent xmlServersInfoModelAgent = new XmlServersInfoModelAgent();
+    private XmlServerInfoModelAgent xmlServerInfoModelAgent = new XmlServerInfoModelAgent();
     private XmlServicesInfoModelAgent xmlServicesInfoModelAgent = new XmlServicesInfoModelAgent();
 
     @Override
@@ -19,7 +19,7 @@ public class XmlClientConfigureModelAgent implements ConfigureModelAgent<ClientC
         clientConfig.setId(clientConfigure.getId());
         clientConfig.setPort(clientConfigure.getPort());
         clientConfig.setServices(xmlServicesInfoModelAgent.toTarget(clientConfigure.getServices()));
-        clientConfig.setServers(xmlServersInfoModelAgent.toTarget(clientConfigure.getServers()));
+        clientConfig.setServer(xmlServerInfoModelAgent.toTarget(clientConfigure.getServer()));
         return clientConfig;
     }
 
@@ -29,7 +29,7 @@ public class XmlClientConfigureModelAgent implements ConfigureModelAgent<ClientC
         clientConfigure.setId(clientConfig.getId());
         clientConfigure.setPort(clientConfig.getPort());
         clientConfigure.setServices(xmlServicesInfoModelAgent.toSource(clientConfig.getServices()));
-        clientConfigure.setServers(xmlServersInfoModelAgent.toSource(clientConfig.getServers()));
+        clientConfigure.setServer(xmlServerInfoModelAgent.toSource(clientConfig.getServer()));
         return clientConfigure;
     }
 }

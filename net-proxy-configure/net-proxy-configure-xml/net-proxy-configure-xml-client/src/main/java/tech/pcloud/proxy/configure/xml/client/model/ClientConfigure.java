@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  **/
 @XmlRootElement(name = "Configure")
 public class ClientConfigure {
-    private ServersInfo servers;
+    private ServerInfo server;
     private int port;
     private long id;
     private ServicesInfo services;
@@ -43,19 +43,19 @@ public class ClientConfigure {
         this.services = services;
     }
 
-    public ServersInfo getServers() {
-        return servers;
+    public ServerInfo getServer() {
+        return server;
     }
 
-    @XmlElement(name = "Servers")
-    public void setServers(ServersInfo servers) {
-        this.servers = servers;
+    @XmlElement(name = "Server")
+    public void setServer(ServerInfo server) {
+        this.server = server;
     }
 
     @Override
     public String toString() {
         return "ClientConfigure{" +
-                "servers=" + servers +
+                "server=" + server +
                 ", port=" + port +
                 ", services=" + services +
                 '}';

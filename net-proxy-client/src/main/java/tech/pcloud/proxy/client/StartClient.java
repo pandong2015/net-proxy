@@ -31,15 +31,13 @@ public class StartClient {
             clientConfig.setId(IdGenerateService.generate(IdGenerateService.IdType.CLIENT));
             configureService.saveConfigure(clientConfig);
         }
-        clientConfig.getServers().forEach(s -> {
-            ClientInfo clientInfo = new ClientInfo();
-            clientInfo.setId(clientConfig.getId());
-            clientInfo.setOpenPort(clientConfig.getPort());
-            clientInfo.setServer(s);
-            clientInfo.setServices(clientConfig.getServices(s));
-            Client client = new Client(clientInfo);
-            client.init();
-        });
+        ClientInfo clientInfo = new ClientInfo();
+        clientInfo.setId(clientConfig.getId());
+        clientInfo.setOpenPort(clientConfig.getPort());
+        clientInfo.setServer(clientConfig.getServer());
+        clientInfo.setServices(clientConfig.getServices(clientConfig.getServer()));
+        Client client = new Client(clientInfo);
+        client.init();
 
     }
 }
