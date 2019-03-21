@@ -1,6 +1,8 @@
 package tech.pcloud.proxy.network.server.handler;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.configure.model.NodeType;
@@ -13,6 +15,7 @@ import tech.pcloud.proxy.network.core.service.ServiceKey;
 import tech.pcloud.proxy.network.core.service.impl.DefaultCommandServiceFactory;
 import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
+import tech.pcloud.proxy.network.server.utils.ServerCache;
 import tech.pcloud.proxy.network.server.utils.ServerProtocolHelper;
 
 import java.util.Map;
@@ -37,7 +40,7 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ProtocolPackage.Protocol msg) throws Exception {
         Operation operation = Operation.getOperation(msg.getOperation().getOperation());
-        log.debug("server operation:{}, request type:{} " , operation.name(), msg.getOperation().getType().name());
+        log.debug("server operation:{}, request type:{} ", operation.name(), msg.getOperation().getType().name());
         Map<String, String> headers = msg.getHeadersMap();
         ProtocolCommand command = ProtocolCommand.newInstance(headers);
         ctx.channel().attr(NetworkModel.ChannelAttribute.COMMAND).set(command);
@@ -57,6 +60,15 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
             case TRANSFER:
                 break;
             case REQUEST:
+                String requestIdStr = headers.get(NetworkModel.ChannelAttributeName.REQUEST_ID);
+                long requestId = Long.parseLong(requestIdStr);
+                Channel proxyChannel = ServerCache.INSTANCE.getProxyChannelWithRequestId(requestId);
+                if (proxyChannel != null) {
+                    log.info("bind request & proxy channel");
+                    proxyChannel.attr(NetworkModel.ChannelAttribute.PROXY_SERVER_CHANNEL).set(ctx.channel());
+                    ctx.channel().attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).set(proxyChannel);
+                    proxyChannel.config().setOption(ChannelOption.AUTO_READ, true);
+                }
                 break;
             default:
                 log.warn("operation UNKNOWN");

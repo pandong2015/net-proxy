@@ -81,10 +81,10 @@ public class ProxyClient implements Initializer {
                                         channel.writeAndFlush(ProtocolHelper.createResponseProtocol(Operation.REQUEST.ordinal(), headers, service.toJson()));
 
                                         //后端服务开始读取数据
-                                        channel.config().setOption(ChannelOption.AUTO_READ, true);
+                                        serviceChannel.config().setOption(ChannelOption.AUTO_READ, true);
 
-                                        channel.attr(NetworkModel.ChannelAttribute.REQUEST_ID).set(requestId);
-                                        channel.attr(NetworkModel.ChannelAttribute.SERVICE).set(service);
+                                        serviceChannel.attr(NetworkModel.ChannelAttribute.REQUEST_ID).set(requestId);
+                                        serviceChannel.attr(NetworkModel.ChannelAttribute.SERVICE).set(service);
                                     }
                                 })
                                 .build());

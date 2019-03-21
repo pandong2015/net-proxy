@@ -36,6 +36,10 @@ public enum ServerCache {
         this.server = server;
     }
 
+    public Channel getProxyChannelWithRequestId(long requestId) {
+        return proxyChannelMapping.get(requestId);
+    }
+
     public void addProxyChannelMapping(long requestId, Service service, Client client, Channel channel, Channel clientChannel) {
         proxyChannelMapping.put(requestId, channel);
         channel.attr(NetworkModel.ChannelAttribute.REQUEST_ID).set(requestId);
