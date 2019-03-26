@@ -69,7 +69,7 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
             // 通知client准备传输
             Map<String, String> headers = Maps.newHashMap();
             headers.put(NetworkModel.ChannelAttributeName.REQUEST_ID, String.valueOf(requestId));
-            clientChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.REQUEST.ordinal(), headers, service.toJson()));
+            clientChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.TRANSFER_REQUEST.ordinal(), headers, service.toJson()));
         }
         super.channelActive(ctx);
     }

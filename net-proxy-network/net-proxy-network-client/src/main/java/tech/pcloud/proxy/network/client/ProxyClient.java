@@ -3,8 +3,6 @@ package tech.pcloud.proxy.network.client;
 import com.google.common.collect.Maps;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +78,7 @@ public class ProxyClient implements Initializer {
                                         //回应connect指令，client准备完毕，准备传输
                                         Map<String, String> headers = Maps.newHashMap();
                                         headers.put(NetworkModel.ChannelAttributeName.REQUEST_ID, String.valueOf(requestId));
-                                        channel.writeAndFlush(ProtocolHelper.createResponseProtocol(Operation.REQUEST.ordinal(), headers, service.toJson()));
+                                        channel.writeAndFlush(ProtocolHelper.createResponseProtocol(Operation.TRANSFER_REQUEST.ordinal(), headers, service.toJson()));
 
                                         //后端服务开始读取数据
                                         serviceChannel.config().setOption(ChannelOption.AUTO_READ, true);

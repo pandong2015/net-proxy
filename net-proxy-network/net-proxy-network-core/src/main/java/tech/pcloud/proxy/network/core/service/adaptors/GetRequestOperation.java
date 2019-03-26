@@ -10,6 +10,6 @@ import tech.pcloud.proxy.network.core.service.GetOperation;
 public interface GetRequestOperation extends GetOperation {
     @Override
     default int getOperation() {
-        return Operation.REQUEST.getOperation();
+        return Operation.TRANSFER_REQUEST.getOperation();
     }
 }

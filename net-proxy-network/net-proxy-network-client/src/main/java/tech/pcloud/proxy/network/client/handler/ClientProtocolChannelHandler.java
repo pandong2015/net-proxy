@@ -58,7 +58,8 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
                 }
                 break;
             case NORMAL:
-            case REQUEST:
+            case TRANSFER_DISCONNECT:
+            case TRANSFER_REQUEST:
                 String content = msg.getBody().toStringUtf8();
                 out.add(content);
                 break;

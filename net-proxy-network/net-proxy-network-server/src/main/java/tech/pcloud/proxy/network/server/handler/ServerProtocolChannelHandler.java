@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
-import tech.pcloud.proxy.configure.model.NodeType;
 import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
@@ -13,7 +12,6 @@ import tech.pcloud.proxy.network.core.service.CommandService;
 import tech.pcloud.proxy.network.core.service.CommandServiceFactory;
 import tech.pcloud.proxy.network.core.service.ServiceKey;
 import tech.pcloud.proxy.network.core.service.impl.DefaultCommandServiceFactory;
-import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 import tech.pcloud.proxy.network.server.utils.ServerCache;
 import tech.pcloud.proxy.network.server.utils.ServerProtocolHelper;
@@ -59,7 +57,7 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
                 break;
             case TRANSFER:
                 break;
-            case REQUEST:
+            case TRANSFER_REQUEST:
                 String requestIdStr = headers.get(NetworkModel.ChannelAttributeName.REQUEST_ID);
                 long requestId = Long.parseLong(requestIdStr);
                 Channel proxyChannel = ServerCache.INSTANCE.getProxyChannelWithRequestId(requestId);
@@ -69,6 +67,8 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
                     ctx.channel().attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).set(proxyChannel);
                     proxyChannel.config().setOption(ChannelOption.AUTO_READ, true);
                 }
+                break;
+            case TRANSFER_DISCONNECT:
                 break;
             default:
                 log.warn("operation UNKNOWN");
