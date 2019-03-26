@@ -12,6 +12,7 @@ import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.network.client.exceptions.BootstrapNotInitException;
 import tech.pcloud.proxy.network.client.model.ClientInfo;
 import tech.pcloud.proxy.network.client.utils.BootstrapFactory;
+import tech.pcloud.proxy.network.client.utils.ClientCache;
 import tech.pcloud.proxy.network.client.utils.ConnectionFactory;
 import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.Operation;
@@ -59,6 +60,7 @@ public class ProxyClient implements Initializer {
                     @Override
                     public void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo) {
                         final Channel serviceChannel = channel;
+                        ClientCache.cacheServiceChannel(requestId, serviceChannel);
                         log.debug("begin create new connection to proxy server...");
                         ConnectionFactory.connect(ConnectionFactory.ConnectionFactoryConfig.builder()
                                 .bootstrap(BootstrapFactory.newInstance(BootstrapFactory.BootstrapFactoryConfig.builder()

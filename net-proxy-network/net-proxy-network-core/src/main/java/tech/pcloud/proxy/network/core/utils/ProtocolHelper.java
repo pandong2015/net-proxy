@@ -60,6 +60,10 @@ public class ProtocolHelper {
         return createResponseProtocol(Operation.NORMAL.getOperation(), command.getHeaders(), body);
     }
 
+    public static ProtocolPackage.Protocol createTransferProtocol(ProtocolPackage.RequestType type, Map<String, String> headers, byte[] body) {
+        return createProtocol(Operation.TRANSFER.getOperation(), type.getNumber(), headers, body);
+    }
+
     public static ProtocolPackage.Protocol createHeartbeatResponseProtocol(NodeType nodeType) {
         Map<String, String> headers = Maps.newHashMap();
         headers.put(ProtocolCommand.PROTOCOL_HEADER_NAME_NODE_TYPE, nodeType.name());

@@ -2,10 +2,7 @@ package tech.pcloud.proxy.network.server.handler;
 
 import com.google.common.collect.Maps;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.configure.model.Service;
@@ -13,6 +10,7 @@ import tech.pcloud.proxy.core.service.IdGenerateService;
 import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
+import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 import tech.pcloud.proxy.network.server.utils.ServerCache;
 
 import java.net.InetSocketAddress;
@@ -37,8 +35,15 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
             byte[] bytes = new byte[msg.readableBytes()];
             msg.readBytes(bytes);
             log.debug("request id --> " + requestId + ", read byte size --> " + bytes.length);
-            // @TODO 发起传输
-//            proxyChannel.writeAndFlush(messageService.generateTransfer(requestId, server, service, bytes));
+            Map<String, String> headers = Maps.newHashMap();
+            headers.put(NetworkModel.ChannelAttributeName.REQUEST_ID, String.valueOf(requestId));
+            proxyChannel.writeAndFlush(ProtocolHelper.createTransferProtocol(ProtocolPackage.RequestType.REQUEST, headers, bytes))
+                    .addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            log.info("send request data resulr: {}.", channelFuture.isSuccess());
+                        }
+                    });
         }
     }
 

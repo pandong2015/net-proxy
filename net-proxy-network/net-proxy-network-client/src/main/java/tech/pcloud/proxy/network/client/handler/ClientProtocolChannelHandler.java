@@ -1,9 +1,13 @@
 package tech.pcloud.proxy.network.client.handler;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
+import tech.pcloud.framework.utility.common.StringUtils;
 import tech.pcloud.proxy.network.client.model.ClientInfo;
 import tech.pcloud.proxy.network.client.utils.ClientCache;
 import tech.pcloud.proxy.network.core.NetworkModel;
@@ -36,7 +40,22 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
                 log.debug("heartbeat success.");
                 break;
             case TRANSFER:
-                // no request
+                String requestIdStr = headers.get(NetworkModel.ChannelAttributeName.REQUEST_ID);
+                if (StringUtils.isNull(requestIdStr)) {
+                    ChannelFuture closeFuter = ctx.channel().closeFuture();
+                    log.warn("request id is null, close channel[close result:{}].", closeFuter.isSuccess());
+                } else {
+                    long requestId = Long.parseLong(requestIdStr);
+                    Channel serviceChannel = ClientCache.getServiceChannel(requestId);
+                    if (serviceChannel == null) {
+                        ChannelFuture closeFuter = ctx.channel().closeFuture();
+                        log.warn("no service channel, close channel[close result:{}].", closeFuter.isSuccess());
+                    } else {
+                        ByteBuf buf = ctx.alloc().buffer(msg.getBody().size());
+                        buf.writeBytes(msg.getBody().toByteArray());
+                        serviceChannel.writeAndFlush(buf);
+                    }
+                }
                 break;
             case NORMAL:
             case REQUEST:
