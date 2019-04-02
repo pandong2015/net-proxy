@@ -46,13 +46,11 @@ public class ProxyServiceHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel realChannel = ctx.channel();
         Channel proxyChannel = realChannel.attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).get();
-        Service service = realChannel.attr(NetworkModel.ChannelAttribute.SERVICE).get();
         long requestId = realChannel.attr(NetworkModel.ChannelAttribute.REQUEST_ID).get();
         log.debug("request id[" + requestId + "], send disconnect commend.");
         if (proxyChannel != null) {
             ClientCache.removeServiceChannel(requestId);
-            // @TODO 关闭连接
-//            proxyChannel.writeAndFlush(messageService.generateDisconnect(requestId, service));
+            proxyChannel.writeAndFlush(ProtocolHelper.createDisconnectProtocol(requestId));
         }
         super.channelInactive(ctx);
     }

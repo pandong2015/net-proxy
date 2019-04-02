@@ -6,6 +6,7 @@ import tech.pcloud.proxy.configure.model.NodeType;
 import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.core.ProxyException;
 import tech.pcloud.proxy.core.model.ToJson;
+import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.ManageProtocolBody;
 import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
@@ -62,6 +63,12 @@ public class ProtocolHelper {
 
     public static ProtocolPackage.Protocol createTransferProtocol(ProtocolPackage.RequestType type, Map<String, String> headers, byte[] body) {
         return createProtocol(Operation.TRANSFER.getOperation(), type.getNumber(), headers, body);
+    }
+
+    public static ProtocolPackage.Protocol createDisconnectProtocol(long requestId) {
+        Map<String, String> headers = Maps.newHashMap();
+        headers.put(NetworkModel.ChannelAttributeName.REQUEST_ID, String.valueOf(requestId));
+        return createResponseProtocol(Operation.TRANSFER_DISCONNECT.getOperation(), headers, (String) null);
     }
 
     public static ProtocolPackage.Protocol createHeartbeatResponseProtocol(NodeType nodeType) {

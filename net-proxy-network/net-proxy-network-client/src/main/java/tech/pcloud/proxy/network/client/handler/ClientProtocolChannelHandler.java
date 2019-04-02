@@ -58,10 +58,13 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
                 }
                 break;
             case NORMAL:
-            case TRANSFER_DISCONNECT:
             case TRANSFER_REQUEST:
                 String content = msg.getBody().toStringUtf8();
                 out.add(content);
+                break;
+            case TRANSFER_DISCONNECT:
+                Channel serviceChannel = ctx.channel().attr(NetworkModel.ChannelAttribute.PROXY_SERVICE_CHANNEL).get();
+                serviceChannel.close();
                 break;
             default:
                 log.warn("operation UNKNOWN");

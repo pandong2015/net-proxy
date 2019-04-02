@@ -58,8 +58,7 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
             case TRANSFER:
                 break;
             case TRANSFER_REQUEST:
-                String requestIdStr = headers.get(NetworkModel.ChannelAttributeName.REQUEST_ID);
-                long requestId = Long.parseLong(requestIdStr);
+                long requestId = getRequestIdFromHeader(headers);
                 Channel proxyChannel = ServerCache.INSTANCE.getProxyChannelWithRequestId(requestId);
                 if (proxyChannel != null) {
                     log.info("bind request & proxy channel");
@@ -69,10 +68,19 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
                 }
                 break;
             case TRANSFER_DISCONNECT:
+                requestId = getRequestIdFromHeader(headers);
+                proxyChannel = ServerCache.INSTANCE.getProxyChannelWithRequestId(requestId);
+                proxyChannel.close();
                 break;
             default:
                 log.warn("operation UNKNOWN");
                 break;
         }
     }
+
+    private long getRequestIdFromHeader(Map<String, String> headers) {
+        String requestIdStr = headers.get(NetworkModel.ChannelAttributeName.REQUEST_ID);
+        return Long.parseLong(requestIdStr);
+    }
+
 }
