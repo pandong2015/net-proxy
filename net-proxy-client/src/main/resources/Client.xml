@@ -4,7 +4,7 @@
     <Port>9999</Port>
     <Server name="local" host="127.0.0.1" port="9550"/>
     <Services>
-        <Service name="callback" status="NORMAL" proxyPort="10010">
+        <Service name="callback" status="NORMAL" proxyPort="10010" host="192.168.171.53" port="10010">
             <Deploy>
                 <Ref name="local" status="NORMAL" />
             </Deploy>

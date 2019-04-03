@@ -3,6 +3,8 @@ package tech.pcloud.proxy.network.client;
 import com.google.common.collect.Maps;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +31,11 @@ public class ProxyClient implements Initializer {
     private Bootstrap proxyBootstrap;
     private Service service;
     private NioEventLoopGroup workerGroup;
+    private ClientInfo clientInfo;
 
-    public ProxyClient(Service service) {
+    public ProxyClient(Service service, ClientInfo clientInfo) {
         this.service = service;
+        this.clientInfo = clientInfo;
         init();
     }
 
@@ -54,6 +58,7 @@ public class ProxyClient implements Initializer {
                 .bootstrap(proxyBootstrap)
                 .host(service.getHost())
                 .port(service.getPort())
+                .clientInfo(clientInfo)
                 .transfer(new Transfer() {
                     @Override
                     public void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo) {
@@ -68,6 +73,7 @@ public class ProxyClient implements Initializer {
                                         .build()))
                                 .host(clientInfo.getServer().getHost())
                                 .port(clientInfo.getServer().getPort())
+                                .clientInfo(clientInfo)
                                 .transfer(new Transfer() {
                                     @Override
                                     public void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo) {
@@ -78,7 +84,13 @@ public class ProxyClient implements Initializer {
                                         //回应connect指令，client准备完毕，准备传输
                                         Map<String, String> headers = Maps.newHashMap();
                                         headers.put(NetworkModel.ChannelAttributeName.REQUEST_ID, String.valueOf(requestId));
-                                        channel.writeAndFlush(ProtocolHelper.createResponseProtocol(Operation.TRANSFER_REQUEST.ordinal(), headers, service.toJson()));
+                                        channel.writeAndFlush(ProtocolHelper.createResponseProtocol(Operation.TRANSFER_REQUEST.ordinal(), headers, service.toJson()))
+                                                .addListener(new ChannelFutureListener() {
+                                                    @Override
+                                                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                                                        log.info("send transfer_request response resulr: {}", channelFuture.isSuccess());
+                                                    }
+                                                });
 
                                         //后端服务开始读取数据
                                         serviceChannel.config().setOption(ChannelOption.AUTO_READ, true);

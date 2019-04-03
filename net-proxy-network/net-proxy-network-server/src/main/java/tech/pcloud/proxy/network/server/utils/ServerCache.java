@@ -147,7 +147,7 @@ public enum ServerCache {
         if (client == null) {
             return null;
         }
-        return getClientChannel(client);
+        return getClientChannel(client.getId());
     }
 
     public Channel getClientChannel(long clientId) {

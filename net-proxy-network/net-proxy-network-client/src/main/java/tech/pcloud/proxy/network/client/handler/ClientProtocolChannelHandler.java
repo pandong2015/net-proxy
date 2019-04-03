@@ -3,6 +3,7 @@ package tech.pcloud.proxy.network.client.handler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.AttributeKey;
@@ -53,7 +54,12 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
                     } else {
                         ByteBuf buf = ctx.alloc().buffer(msg.getBody().size());
                         buf.writeBytes(msg.getBody().toByteArray());
-                        serviceChannel.writeAndFlush(buf);
+                        serviceChannel.writeAndFlush(buf).addListener(new ChannelFutureListener() {
+                            @Override
+                            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                                log.info("send request to target service result: {}", channelFuture.isSuccess());
+                            }
+                        });
                     }
                 }
                 break;

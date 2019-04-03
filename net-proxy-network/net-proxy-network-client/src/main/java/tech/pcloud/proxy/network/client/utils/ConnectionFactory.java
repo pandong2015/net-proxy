@@ -31,8 +31,9 @@ public class ConnectionFactory {
                                 Channel currentChannel = channelFuture.channel();
                                 InetSocketAddress localSocketAddress = (InetSocketAddress) currentChannel.localAddress();
                                 InetSocketAddress remoteSocketAddress = (InetSocketAddress) currentChannel.remoteAddress();
-                                ClientInfo clientInfo = ClientCache.getClientInfoWithPort(localSocketAddress.getPort());
-                                connectionFactoryConfig.getTransfer().transmit(currentChannel, localSocketAddress, remoteSocketAddress, clientInfo);
+                                connectionFactoryConfig.getTransfer()
+                                        .transmit(currentChannel, localSocketAddress,
+                                                remoteSocketAddress, connectionFactoryConfig.getClientInfo());
                                 log.info("transmit data success.");
                             }
                         } else {
@@ -49,5 +50,6 @@ public class ConnectionFactory {
         private String host;
         private Integer port;
         private Transfer transfer;
+        private ClientInfo clientInfo;
     }
 }

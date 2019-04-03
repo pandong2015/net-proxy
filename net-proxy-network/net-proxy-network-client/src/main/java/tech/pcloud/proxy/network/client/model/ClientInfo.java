@@ -7,6 +7,7 @@ import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.network.client.Client;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ClassName ClientInfo
@@ -20,4 +21,13 @@ public class ClientInfo {
     private int openPort;
     private long id;
     private List<Service> services = Lists.newArrayList();
+
+    public Service getServiceWithProxyPort(int proxyPort) {
+        Optional<Service> optionalService = services.stream()
+                .filter(s -> s.getProxyPort() == proxyPort).findFirst();
+        if (optionalService == null) {
+            return null;
+        }
+        return optionalService.get();
+    }
 }

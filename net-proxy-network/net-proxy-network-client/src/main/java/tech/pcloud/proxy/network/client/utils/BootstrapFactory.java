@@ -52,7 +52,7 @@ public class BootstrapFactory {
                 channel.pipeline().addLast(new DHSecurityCodecHandler(2048));
                 channel.pipeline().addLast(new ProtobufDecoder(ProtocolPackage.Protocol.getDefaultInstance()));
                 channel.pipeline().addLast(new ProtobufEncoder());
-                channel.pipeline().addLast(new IdleHandler());
+//                channel.pipeline().addLast(new IdleHandler());
                 channel.pipeline().addLast(new ClientProtocolChannelHandler());
                 channel.pipeline().addLast(new ClientChannelHandler(commandServiceFactory));
             }

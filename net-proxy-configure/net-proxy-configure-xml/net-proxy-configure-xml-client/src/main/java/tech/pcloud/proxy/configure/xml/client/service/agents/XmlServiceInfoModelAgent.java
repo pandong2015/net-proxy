@@ -17,6 +17,8 @@ public class XmlServiceInfoModelAgent implements ConfigureModelAgent<Service, Se
     public Service exchage2Target(ServiceInfo serviceInfo) {
         Service service = new Service();
         service.setName(serviceInfo.getName());
+        service.setHost(serviceInfo.getHost());
+        service.setPort(serviceInfo.getPort());
         service.setProxyPort(serviceInfo.getProxyPoint());
         service.setStatus(Status.valueOf(serviceInfo.getStatus()));
         service.setTargets(xmlServiceHostsInfoModelAgent.toTarget(serviceInfo.getDeploy()));
@@ -28,6 +30,8 @@ public class XmlServiceInfoModelAgent implements ConfigureModelAgent<Service, Se
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setStatus(service.getStatus().name());
         serviceInfo.setName(service.getName());
+        serviceInfo.setHost(service.getHost());
+        serviceInfo.setPort(service.getPort());
         serviceInfo.setProxyPoint(service.getProxyPort());
         serviceInfo.setDeploy(xmlServiceHostsInfoModelAgent.toSource(service.getTargets()));
         return serviceInfo;

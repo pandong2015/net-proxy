@@ -5,16 +5,21 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.NodeType;
 import tech.pcloud.proxy.configure.model.Service;
 import tech.pcloud.proxy.core.service.IdGenerateService;
 import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.Operation;
+import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.core.utils.ProtocolHelper;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 import tech.pcloud.proxy.network.server.utils.ServerCache;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
+
+import static tech.pcloud.proxy.network.core.protocol.ProtocolCommand.PROTOCOL_HEADER_NAME_COMMAND;
+import static tech.pcloud.proxy.network.core.protocol.ProtocolCommand.PROTOCOL_HEADER_NAME_NODE_TYPE;
 
 /**
  * @ClassName ProxyServerChannelHandler
@@ -69,7 +74,15 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
             // 通知client准备传输
             Map<String, String> headers = Maps.newHashMap();
             headers.put(NetworkModel.ChannelAttributeName.REQUEST_ID, String.valueOf(requestId));
-            clientChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.TRANSFER_REQUEST.ordinal(), headers, service.toJson()));
+            headers.put(PROTOCOL_HEADER_NAME_NODE_TYPE, NodeType.SERVICE.name());
+            headers.put(PROTOCOL_HEADER_NAME_COMMAND, ProtocolCommand.Command.CONNECT.name());
+            clientChannel.writeAndFlush(ProtocolHelper.createRequestProtocol(Operation.TRANSFER_REQUEST.ordinal(), headers, service.toJson()))
+                    .addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            log.info("send transfer request result: {}", channelFuture.isSuccess());
+                        }
+                    });
         }
         super.channelActive(ctx);
     }
@@ -84,7 +97,8 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
         } else {
             log.debug("close request, reuqest id --> " + requestId);
             proxyChannel.attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).set(null);
-            proxyChannel.writeAndFlush(ProtocolHelper.createDisconnectProtocol(requestId));
+//            proxyChannel.writeAndFlush(ProtocolHelper.createDisconnectProtocol(requestId));
+//            requestChannel.close();
         }
         super.channelInactive(ctx);
     }

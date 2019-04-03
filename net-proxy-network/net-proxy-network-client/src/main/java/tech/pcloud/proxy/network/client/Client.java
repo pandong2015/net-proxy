@@ -73,6 +73,7 @@ public class Client implements Initializer {
                 .bootstrap(bootstrap)
                 .host(server.getHost())
                 .port(server.getPort())
+                .clientInfo(clientInfo)
                 .transfer(new Transfer() {
                     @Override
                     public void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo) {
@@ -81,6 +82,7 @@ public class Client implements Initializer {
                         channel.attr(NetworkModel.ChannelAttribute.PORT).set(localSocketAddress.getPort());
                         log.info("connect server[{}:{}] success, bind port: {}", server.getHost(), server.getPort(), localSocketAddress.getPort());
 
+                        clientInfo.setClient(getClient());
                         tech.pcloud.proxy.configure.model.Client client = new tech.pcloud.proxy.configure.model.Client();
                         client.setId(clientInfo.getId());
                         client.setPort(localSocketAddress.getPort());
@@ -100,6 +102,9 @@ public class Client implements Initializer {
                 .build());
     }
 
+    private Client getClient(){
+        return this;
+    }
 
     public void write(Object msg) {
         currentChannel.writeAndFlush(msg);

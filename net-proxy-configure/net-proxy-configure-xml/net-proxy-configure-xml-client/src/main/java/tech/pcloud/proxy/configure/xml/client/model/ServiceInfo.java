@@ -12,6 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Service")
 public class ServiceInfo {
     private String name;
+    private String host;
+    private int port;
     private String status;
     private int proxyPoint;
     private ServiceDeployInfo deploy;
@@ -19,6 +21,7 @@ public class ServiceInfo {
     public String getName() {
         return name;
     }
+
     @XmlAttribute(name = "name")
     public void setName(String name) {
         this.name = name;
@@ -27,6 +30,7 @@ public class ServiceInfo {
     public String getStatus() {
         return status;
     }
+
     @XmlAttribute(name = "status")
     public void setStatus(String status) {
         this.status = status;
@@ -35,6 +39,7 @@ public class ServiceInfo {
     public int getProxyPoint() {
         return proxyPoint;
     }
+
     @XmlAttribute(name = "proxyPort")
     public void setProxyPoint(int proxyPoint) {
         this.proxyPoint = proxyPoint;
@@ -43,9 +48,28 @@ public class ServiceInfo {
     public ServiceDeployInfo getDeploy() {
         return deploy;
     }
+
     @XmlElement(name = "Deploy")
     public void setDeploy(ServiceDeployInfo deploy) {
         this.deploy = deploy;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    @XmlAttribute(name = "host")
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    @XmlAttribute(name = "port")
+    public void setPort(int port) {
+        this.port = port;
     }
 
     @Override

@@ -43,6 +43,11 @@ public class ProxyServiceHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+    }
+
+    @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel realChannel = ctx.channel();
         Channel proxyChannel = realChannel.attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).get();

@@ -22,13 +22,13 @@ public class ClientChannelHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         ProtocolPackage.Operation operation = ctx.channel().attr(NetworkModel.ChannelAttribute.OPERATION).get();
-        if (Operation.NORMAL.ordinal() != operation.getOperation()) {
-            return;
+        if (Operation.NORMAL.ordinal() == operation.getOperation()
+                || Operation.TRANSFER_REQUEST.ordinal() == operation.getOperation()) {
+            ProtocolCommand command = ctx.channel().attr(NetworkModel.ChannelAttribute.COMMAND).get();
+            ServiceKey key = new ServiceKey(operation.getOperation(), operation.getType(), command.getNodeType());
+            CommandService<String> service = commandServiceFactory.getCommandService(key);
+            service.execute(operation, command, ctx.channel(), msg);
         }
-        ProtocolCommand command = ctx.channel().attr(NetworkModel.ChannelAttribute.COMMAND).get();
-        ServiceKey key = new ServiceKey(operation.getOperation(), operation.getType(), command.getNodeType());
-        CommandService<String> service = commandServiceFactory.getCommandService(key);
-        service.execute(operation, command, ctx.channel(), msg);
     }
 
     @Override
