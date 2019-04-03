@@ -14,12 +14,12 @@ import java.nio.file.Paths;
  * @Author pandong
  * @Date 2019/2/21 14:43
  **/
-public class StartServer {
+public class Startup {
     public static void main(String[] args){
         System.setProperty("jdk.crypto.KeyAgreement.legacyKDF", "true");
         StoreService storeService = null;
         try {
-            storeService = new FileSystemStoreService(Paths.get(StartServer.class.getResource("/Server.xml").toURI()));
+            storeService = new FileSystemStoreService(Paths.get(Startup.class.getResource("/Server.xml").toURI()));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

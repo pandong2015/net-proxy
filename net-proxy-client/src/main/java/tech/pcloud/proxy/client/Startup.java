@@ -17,11 +17,11 @@ import java.nio.file.Paths;
  * @Author pandong
  * @Date 2019/2/21 15:12
  **/
-public class StartClient {
+public class Startup {
     public static void main(String[] args) {
         StoreService storeService = null;
         try {
-            storeService = new FileSystemStoreService(Paths.get(StartClient.class.getResource("/Client.xml").toURI()));
+            storeService = new FileSystemStoreService(Paths.get(Startup.class.getResource("/Client.xml").toURI()));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
