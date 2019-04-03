@@ -22,7 +22,6 @@ public class ProxyServiceHandler extends SimpleChannelInboundHandler<ByteBuf> {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
         Channel serviceChannel = channelHandlerContext.channel();
         Channel proxyChannel = serviceChannel.attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).get();
-        Service service = serviceChannel.attr(NetworkModel.ChannelAttribute.SERVICE).get();
         long requestId = serviceChannel.attr(NetworkModel.ChannelAttribute.REQUEST_ID).get();
         if (proxyChannel == null) {
             serviceChannel.close();

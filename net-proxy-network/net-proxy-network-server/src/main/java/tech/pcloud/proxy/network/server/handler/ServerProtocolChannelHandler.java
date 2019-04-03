@@ -1,5 +1,6 @@
 package tech.pcloud.proxy.network.server.handler;
 
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
@@ -56,10 +57,13 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
                 commandService.execute(msg.getOperation(), command, ctx.channel(), content);
                 break;
             case TRANSFER:
-                break;
-            case TRANSFER_REQUEST:
                 long requestId = getRequestIdFromHeader(headers);
                 Channel proxyChannel = ServerCache.INSTANCE.getProxyChannelWithRequestId(requestId);
+                proxyChannel.writeAndFlush(Unpooled.copiedBuffer(msg.getBody().toByteArray()));
+                break;
+            case TRANSFER_REQUEST:
+                requestId = getRequestIdFromHeader(headers);
+                proxyChannel = ServerCache.INSTANCE.getProxyChannelWithRequestId(requestId);
                 if (proxyChannel != null) {
                     log.info("bind request & proxy channel");
                     proxyChannel.attr(NetworkModel.ChannelAttribute.PROXY_SERVER_CHANNEL).set(ctx.channel());

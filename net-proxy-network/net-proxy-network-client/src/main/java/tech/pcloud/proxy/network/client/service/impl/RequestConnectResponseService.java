@@ -33,12 +33,12 @@ public class RequestConnectResponseService
         InetSocketAddress local = (InetSocketAddress) channel.localAddress();
         ClientInfo clientInfo = ClientCache.getClientInfoWithPort(local.getPort());
         Map<String, String> header = channel.attr(NetworkModel.ChannelAttribute.HEADER).get();
-        Long requestId = null;
-        if (header.containsKey(NetworkModel.ChannelAttributeName.REQUEST_ID)) {
-            requestId = Long.parseLong(header.get(NetworkModel.ChannelAttributeName.REQUEST_ID));
-        } else {
-            requestId = IdGenerateService.generate(IdGenerateService.IdType.REQUEST);
-        }
+        Long  requestId = Long.parseLong(header.get(NetworkModel.ChannelAttributeName.REQUEST_ID));
+//        if (header.containsKey(NetworkModel.ChannelAttributeName.REQUEST_ID)) {
+//            requestId = Long.parseLong(header.get(NetworkModel.ChannelAttributeName.REQUEST_ID));
+//        } else {
+//            requestId = IdGenerateService.generate(IdGenerateService.IdType.REQUEST);
+//        }
         getLogger().info("begin connect service...");
         ProxyClient proxyClient = new ProxyClient(clientInfo.getServiceWithProxyPort(content.getProxyPort()), clientInfo);
         proxyClient.connect(requestId);

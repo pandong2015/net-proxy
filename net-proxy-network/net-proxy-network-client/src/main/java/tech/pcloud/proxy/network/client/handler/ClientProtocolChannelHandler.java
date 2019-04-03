@@ -1,10 +1,7 @@
 package tech.pcloud.proxy.network.client.handler;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.*;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +51,7 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
                     } else {
                         ByteBuf buf = ctx.alloc().buffer(msg.getBody().size());
                         buf.writeBytes(msg.getBody().toByteArray());
+                        serviceChannel.config().setOption(ChannelOption.AUTO_READ, true);
                         serviceChannel.writeAndFlush(buf).addListener(new ChannelFutureListener() {
                             @Override
                             public void operationComplete(ChannelFuture channelFuture) throws Exception {

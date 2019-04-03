@@ -15,6 +15,7 @@ import tech.pcloud.framework.netty.handler.DHSecurityCodecHandler;
 import tech.pcloud.proxy.network.client.handler.ClientChannelHandler;
 import tech.pcloud.proxy.network.client.handler.ClientProtocolChannelHandler;
 import tech.pcloud.proxy.network.client.handler.IdleHandler;
+import tech.pcloud.proxy.network.client.handler.ProxyServiceHandler;
 import tech.pcloud.proxy.network.core.service.CommandServiceFactory;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
@@ -68,7 +69,7 @@ public class BootstrapFactory {
 
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-//                        socketChannel.pipeline().addLast()
+                        socketChannel.pipeline().addLast(new ProxyServiceHandler());
                     }
                 });
         return bootstrap;

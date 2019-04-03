@@ -16,6 +16,7 @@ import java.nio.file.Paths;
  **/
 public class StartServer {
     public static void main(String[] args){
+        System.setProperty("jdk.crypto.KeyAgreement.legacyKDF", "true");
         StoreService storeService = null;
         try {
             storeService = new FileSystemStoreService(Paths.get(StartServer.class.getResource("/Server.xml").toURI()));

@@ -93,7 +93,7 @@ public class ProxyClient implements Initializer {
                                                 });
 
                                         //后端服务开始读取数据
-                                        serviceChannel.config().setOption(ChannelOption.AUTO_READ, true);
+                                        serviceChannel.config().setOption(ChannelOption.AUTO_READ, false);
 
                                         serviceChannel.attr(NetworkModel.ChannelAttribute.REQUEST_ID).set(requestId);
                                         serviceChannel.attr(NetworkModel.ChannelAttribute.SERVICE).set(service);
