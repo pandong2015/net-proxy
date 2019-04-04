@@ -97,8 +97,8 @@ public class ProxyServerChannelHandler extends SimpleChannelInboundHandler<ByteB
         } else {
             log.debug("close request, reuqest id --> " + requestId);
             proxyChannel.attr(NetworkModel.ChannelAttribute.PROXY_REQUEST_CHANNEL).set(null);
-//            proxyChannel.writeAndFlush(ProtocolHelper.createDisconnectProtocol(requestId));
-//            requestChannel.close();
+            proxyChannel.writeAndFlush(ProtocolHelper.createDisconnectProtocol(requestId));
+            requestChannel.close();
         }
         super.channelInactive(ctx);
     }
