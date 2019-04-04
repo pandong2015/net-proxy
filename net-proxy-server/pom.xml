@@ -16,18 +16,18 @@
             <!--<groupId>tech.pcloud</groupId>-->
             <!--<artifactId>framework-jdbc-sqlite</artifactId>-->
         <!--</dependency>-->
-        <dependency>
+        <!--<dependency>
             <groupId>tech.pcloud</groupId>
             <artifactId>framework-jdbc-derby</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>tech.pcloud</groupId>
-            <artifactId>framework-spring-boot-jdbc-druid</artifactId>
-        </dependency>
-        <dependency>
+        </dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>tech.pcloud</groupId>-->
+            <!--<artifactId>framework-spring-boot-jdbc-druid</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>
             <groupId>tech.pcloud</groupId>
             <artifactId>framework-spring-boot-mybatis</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>tech.pcloud</groupId>
             <artifactId>net-proxy-core</artifactId>
@@ -57,7 +57,7 @@
 
 
     <build>
-        <finalName>nnts-server</finalName>
+        <finalName>server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -72,6 +72,29 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <!--<plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>tech.pcloud.proxy.server.Startup</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

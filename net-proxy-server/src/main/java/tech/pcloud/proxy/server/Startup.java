@@ -1,5 +1,7 @@
 package tech.pcloud.proxy.server;
 
+import org.springframework.boot.Banner;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.service.ConfigureService;
 import tech.pcloud.proxy.configure.xml.server.service.ServerConfigureService;
@@ -17,14 +19,10 @@ import java.nio.file.Paths;
 public class Startup {
     public static void main(String[] args){
         System.setProperty("jdk.crypto.KeyAgreement.legacyKDF", "true");
-        StoreService storeService = null;
-        try {
-            storeService = new FileSystemStoreService(Paths.get(Startup.class.getResource("/Server.xml").toURI()));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        ConfigureService<Server> configureService = new ServerConfigureService(storeService);
-        tech.pcloud.proxy.network.server.Server server = new tech.pcloud.proxy.network.server.Server(configureService.loadConfigure());
-        server.init();
+        new SpringApplicationBuilder()
+                .bannerMode(Banner.Mode.OFF)
+                .sources(Config.class)
+                .build()
+                .run(args);
     }
 }

@@ -1,5 +1,7 @@
 package tech.pcloud.proxy.client;
 
+import org.springframework.boot.Banner;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import tech.pcloud.proxy.configure.model.ClientConfig;
 import tech.pcloud.proxy.configure.service.ConfigureService;
 import tech.pcloud.proxy.configure.xml.client.service.ClientConfigureService;
@@ -19,25 +21,11 @@ import java.nio.file.Paths;
  **/
 public class Startup {
     public static void main(String[] args) {
-        StoreService storeService = null;
-        try {
-            storeService = new FileSystemStoreService(Paths.get(Startup.class.getResource("/Client.xml").toURI()));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        ConfigureService<ClientConfig> configureService = new ClientConfigureService(storeService);
-        ClientConfig clientConfig = configureService.loadConfigure();
-        if (clientConfig.getId() == 0) {
-            clientConfig.setId(IdGenerateService.generate(IdGenerateService.IdType.CLIENT));
-            configureService.saveConfigure(clientConfig);
-        }
-        ClientInfo clientInfo = new ClientInfo();
-        clientInfo.setId(clientConfig.getId());
-        clientInfo.setOpenPort(clientConfig.getPort());
-        clientInfo.setServer(clientConfig.getServer());
-        clientInfo.setServices(clientConfig.getServices(clientConfig.getServer()));
-        Client client = new Client(clientInfo);
-        client.init();
-
+        System.setProperty("jdk.crypto.KeyAgreement.legacyKDF", "true");
+        new SpringApplicationBuilder()
+                .bannerMode(Banner.Mode.OFF)
+                .sources(Config.class)
+                .build()
+                .run(args);
     }
 }
