@@ -55,7 +55,7 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
                         serviceChannel.writeAndFlush(buf).addListener(new ChannelFutureListener() {
                             @Override
                             public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                                log.info("send request to target service result: {}", channelFuture.isSuccess());
+                                log.info("send request to target service result: {}, send bytes size: {}", channelFuture.isSuccess(), msg.getBody().size());
                             }
                         });
                     }
