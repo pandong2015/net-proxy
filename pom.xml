@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tech.pcloud</groupId>
@@ -11,10 +12,10 @@
         <module>net-proxy-core</module>
         <module>net-proxy-message</module>
         <module>net-proxy-client</module>
-    <module>net-proxy-store</module>
-    <module>net-proxy-configure</module>
-    <module>net-proxy-network</module>
-  </modules>
+        <module>net-proxy-store</module>
+        <module>net-proxy-configure</module>
+        <module>net-proxy-network</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,6 +24,13 @@
         <netty-version>4.1.18.Final</netty-version>
         <fastjson.version>1.2.43</fastjson.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://github.com/pandong2015/net-proxy.git</connection>
+        <url>https://github.com/pandong2015/net-proxy</url>
+        <developerConnection>scm:git:https://github.com/pandong2015/net-proxy.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <dependency>
