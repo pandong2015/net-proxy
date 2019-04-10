@@ -194,11 +194,11 @@
     <distributionManagement>
         <repository>
             <id>self-releases</id>
-            <url>https://maven.pandong.online/repositories/maven-releases</url>
+            <url>https://maven.pandong.online/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>self-snapshots</id>
-            <url>https://maven.pandong.online/repositories/maven-snapshots</url>
+            <url>https://maven.pandong.online/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
