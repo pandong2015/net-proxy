@@ -4,6 +4,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.EventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.extern.slf4j.Slf4j;
 import tech.pcloud.proxy.configure.model.Server;
@@ -19,6 +20,7 @@ import tech.pcloud.proxy.network.core.service.impl.DefaultCommandServiceFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName Client
@@ -68,7 +70,7 @@ public class Client implements Initializer {
 
         ClientCache.mappingClientInfoWithPort(clientInfo.getOpenPort(), clientInfo);
         Server server = clientInfo.getServer();
-
+        ConnectionFactory.ConnectionFactoryConfig connectionFactoryConfig = null;
         ConnectionFactory.connect(ConnectionFactory.ConnectionFactoryConfig.builder()
                 .bootstrap(bootstrap)
                 .host(server.getHost())
@@ -97,6 +99,20 @@ public class Client implements Initializer {
                                         }
                                     }
                                 });
+                    }
+
+                    @Override
+                    public void fail() {
+                        if(clientInfo.isRetry()){
+                            log.info("after {} ms, retry connectiong...", clientInfo.getSleepTime());
+
+                            pool.schedule(new Runnable() {
+                                @Override
+                                public void run() {
+                                    init();
+                                }
+                            }, clientInfo.getSleepTime(), TimeUnit.MILLISECONDS);
+                        }
                     }
                 })
                 .build());

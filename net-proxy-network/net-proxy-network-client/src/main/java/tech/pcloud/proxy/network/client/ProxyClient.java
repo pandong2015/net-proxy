@@ -98,9 +98,20 @@ public class ProxyClient implements Initializer {
                                         serviceChannel.attr(NetworkModel.ChannelAttribute.REQUEST_ID).set(requestId);
                                         serviceChannel.attr(NetworkModel.ChannelAttribute.SERVICE).set(service);
                                     }
+
+                                    @Override
+                                    public void fail() {
+                                        log.error("conection fail");
+                                    }
                                 })
                                 .build());
                     }
+
+                    @Override
+                    public void fail() {
+                        log.error("conection fail");
+                    }
+
                 })
                 .build());
 

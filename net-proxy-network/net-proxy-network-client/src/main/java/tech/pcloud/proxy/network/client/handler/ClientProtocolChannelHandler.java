@@ -13,6 +13,7 @@ import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
 import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
@@ -76,4 +77,15 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
         }
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.error(cause.getMessage());
+        if (cause instanceof IOException) {
+            InetSocketAddress inetSocketAddress = (InetSocketAddress) ctx.channel().localAddress();
+            ClientInfo clientInfo = ClientCache.getClientInfoWithPort(inetSocketAddress.getPort());
+            ctx.channel().close();
+            clientInfo.getClient().init();
+        }
+        super.exceptionCaught(ctx, cause);
+    }
 }

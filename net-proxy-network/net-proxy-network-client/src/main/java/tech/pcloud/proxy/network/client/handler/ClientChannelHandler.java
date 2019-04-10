@@ -31,19 +31,4 @@ public class ClientChannelHandler extends SimpleChannelInboundHandler<String> {
         }
     }
 
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        log.warn("channelInactive ...");
-//        Boolean daemon = ctx.channel().attr(Global.ChannelAttribute.DAEMON).get();
-//        if (daemon != null && daemon) {
-//            Node server = ctx.channel().attr(Global.ChannelAttribute.SERVER).get();
-//            Global.setConnectStatus(server, Global.ClientConnectStatus.SHUTDOWN);
-//        }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error(cause.getMessage());
-    }
-
 }

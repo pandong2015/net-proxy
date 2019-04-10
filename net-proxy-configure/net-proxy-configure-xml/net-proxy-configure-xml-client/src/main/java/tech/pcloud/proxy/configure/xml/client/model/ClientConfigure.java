@@ -1,6 +1,5 @@
 package tech.pcloud.proxy.configure.xml.client.model;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,6 +13,8 @@ public class ClientConfigure {
     private ServerInfo server;
     private int port;
     private long id;
+    private boolean retry;
+    private long sleepTime;
     private ServicesInfo services;
 
     public long getId() {
@@ -50,6 +51,23 @@ public class ClientConfigure {
     @XmlElement(name = "Server")
     public void setServer(ServerInfo server) {
         this.server = server;
+    }
+
+    public boolean isRetry() {
+        return retry;
+    }
+    @XmlElement(name = "Retry")
+    public void setRetry(boolean retry) {
+        this.retry = retry;
+    }
+
+    public long getSleepTime() {
+        return sleepTime;
+    }
+
+    @XmlElement(name = "SleepTime")
+    public void setSleepTime(long sleepTime) {
+        this.sleepTime = sleepTime;
     }
 
     @Override

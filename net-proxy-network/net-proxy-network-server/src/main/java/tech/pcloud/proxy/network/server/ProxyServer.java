@@ -65,7 +65,7 @@ public class ProxyServer {
     }
 
     public void shutdown() {
-        masterGroup.shutdownGracefully().awaitUninterruptibly();
-        workerGroup.shutdownGracefully().awaitUninterruptibly();
+        masterGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
 }

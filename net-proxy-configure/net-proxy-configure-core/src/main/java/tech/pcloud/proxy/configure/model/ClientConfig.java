@@ -18,6 +18,8 @@ import java.util.Set;
 public class ClientConfig {
     private long id;
     private int port;
+    private boolean retry;
+    private long sleepTime;
     private List<Service> services;
     private Server server;
 

@@ -11,4 +11,5 @@ import java.net.InetSocketAddress;
  */
 public interface Transfer {
     void transmit(Channel channel, InetSocketAddress localSocketAddress, InetSocketAddress remoteSocketAddress, ClientInfo clientInfo);
+    void fail();
 }

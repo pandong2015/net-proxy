@@ -18,6 +18,8 @@ public class XmlClientConfigureModelAgent implements ConfigureModelAgent<ClientC
         ClientConfig clientConfig = new ClientConfig();
         clientConfig.setId(clientConfigure.getId());
         clientConfig.setPort(clientConfigure.getPort());
+        clientConfig.setRetry(clientConfigure.isRetry());
+        clientConfig.setSleepTime(clientConfigure.getSleepTime());
         clientConfig.setServices(xmlServicesInfoModelAgent.toTarget(clientConfigure.getServices()));
         clientConfig.setServer(xmlServerInfoModelAgent.toTarget(clientConfigure.getServer()));
         return clientConfig;
@@ -28,6 +30,8 @@ public class XmlClientConfigureModelAgent implements ConfigureModelAgent<ClientC
         ClientConfigure clientConfigure = new ClientConfigure();
         clientConfigure.setId(clientConfig.getId());
         clientConfigure.setPort(clientConfig.getPort());
+        clientConfigure.setRetry(clientConfig.isRetry());
+        clientConfigure.setSleepTime(clientConfig.getSleepTime());
         clientConfigure.setServices(xmlServicesInfoModelAgent.toSource(clientConfig.getServices()));
         clientConfigure.setServer(xmlServerInfoModelAgent.toSource(clientConfig.getServer()));
         return clientConfigure;

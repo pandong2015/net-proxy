@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
+import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.network.core.NetworkModel;
 import tech.pcloud.proxy.network.core.protocol.Operation;
 import tech.pcloud.proxy.network.core.protocol.ProtocolCommand;
@@ -17,6 +18,7 @@ import tech.pcloud.proxy.network.protocol.ProtocolPackage;
 import tech.pcloud.proxy.network.server.utils.ServerCache;
 import tech.pcloud.proxy.network.server.utils.ServerProtocolHelper;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -87,4 +89,16 @@ public class ServerProtocolChannelHandler extends SimpleChannelInboundHandler<Pr
         return Long.parseLong(requestIdStr);
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.error(cause.getMessage());
+        if (cause instanceof IOException) {
+            Client client = ctx.channel().attr(NetworkModel.ChannelAttribute.CLIENT).get();
+            if (client != null) {
+                log.info("close about proxy service, client[{}-{}]", client.getId(), client.getHost());
+                ServerCache.INSTANCE.delClient(client);
+            }
+        }
+        super.exceptionCaught(ctx, cause);
+    }
 }

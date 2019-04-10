@@ -38,6 +38,7 @@ public class ConnectionFactory {
                             }
                         } else {
                             log.info("connect {}:{} fail.", connectionFactoryConfig.getHost(), connectionFactoryConfig.getPort());
+                            connectionFactoryConfig.getTransfer().fail();
                         }
                     }
                 });

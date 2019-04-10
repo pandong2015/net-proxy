@@ -20,6 +20,8 @@ public class ClientInfo {
     private Server server;
     private int openPort;
     private long id;
+    private boolean retry;
+    private long sleepTime;
     private List<Service> services = Lists.newArrayList();
 
     public Service getServiceWithProxyPort(int proxyPort) {

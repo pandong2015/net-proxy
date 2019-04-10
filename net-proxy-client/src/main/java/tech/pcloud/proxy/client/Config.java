@@ -54,6 +54,8 @@ public class Config {
     public ClientInfo getClientInfo(@Autowired ClientConfig clientConfig) {
         ClientInfo clientInfo = new ClientInfo();
         clientInfo.setId(clientConfig.getId());
+        clientInfo.setRetry(clientConfig.isRetry());
+        clientInfo.setSleepTime(clientConfig.getSleepTime());
         clientInfo.setOpenPort(clientConfig.getPort());
         clientInfo.setServer(clientConfig.getServer());
         clientInfo.setServices(clientConfig.getServices(clientConfig.getServer()));

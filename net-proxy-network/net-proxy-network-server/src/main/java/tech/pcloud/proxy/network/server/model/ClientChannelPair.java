@@ -5,6 +5,7 @@ import io.netty.channel.Channel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tech.pcloud.proxy.configure.model.Client;
+import tech.pcloud.proxy.configure.model.Service;
 
 import java.util.Map;
 
@@ -30,5 +31,9 @@ public class ClientChannelPair {
 
     public boolean hasService(String serviceName) {
         return services.containsKey(serviceName);
+    }
+
+    public void addService(Service service) {
+        services.put(service.getName(), new ServiceStatus(service));
     }
 }

@@ -2,6 +2,8 @@ package tech.pcloud.proxy.network.server.utils;
 
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.pcloud.proxy.configure.model.Client;
 import tech.pcloud.proxy.configure.model.Server;
 import tech.pcloud.proxy.configure.model.Service;
@@ -21,6 +23,7 @@ import java.util.Map;
 public enum ServerCache {
     INSTANCE;
 
+    private static final Logger log = LoggerFactory.getLogger(ServerCache.class);
     private Server server;
     private Map<Long, ClientChannelPair> clientChannelMapping = Maps.newConcurrentMap();
     private Map<Integer, ProxyServer> proxyServerMapping = Maps.newConcurrentMap();
@@ -50,6 +53,7 @@ public enum ServerCache {
 
     public void addClientChannelMapping(Client client, Channel channel) {
         clientChannelMapping.put(client.getId(), new ClientChannelPair(client, channel));
+        channel.attr(NetworkModel.ChannelAttribute.CLIENT).set(client);
     }
 
     public void delService(Service service, Client client) {
@@ -58,6 +62,7 @@ public enum ServerCache {
         if (clientSelector.size() == 0) {
             ProxyServer proxyServer = proxyServerMapping.get(service.getProxyPort());
             proxyServer.shutdown();
+            log.info("shutdown proxy server, {}-{}", service.getName(), service.getProxyPort());
             proxyServerMapping.remove(service.getProxyPort());
         }
     }
@@ -85,6 +90,8 @@ public enum ServerCache {
 
     public void addClientServiceMapping(long clientId, Service service) {
         if (clientChannelMapping.containsKey(clientId)) {
+            ClientChannelPair clientChannelPair = clientChannelMapping.get(clientId);
+            clientChannelPair.addService(service);
             Client client = getClientWithId(clientId);
             servicePortMapping.put(service.getProxyPort(), service);
             ClientSelector clientSelector = servicePortClientsMapping.get(service.getProxyPort());
