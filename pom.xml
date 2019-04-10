@@ -130,7 +130,7 @@
             <dependency>
                 <groupId>tech.pcloud</groupId>
                 <artifactId>framework</artifactId>
-                <version>0.0.2-SNAPSHOT</version>
+                <version>0.0.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
