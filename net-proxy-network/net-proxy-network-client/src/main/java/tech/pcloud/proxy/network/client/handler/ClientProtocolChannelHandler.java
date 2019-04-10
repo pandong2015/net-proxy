@@ -78,13 +78,23 @@ public class ClientProtocolChannelHandler extends MessageToMessageDecoder<Protoc
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error(cause.getMessage());
-        if (cause instanceof IOException) {
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        Boolean retry = ctx.channel().attr(NetworkModel.ChannelAttribute.RETRY).get();
+        if (retry != null && retry == true) {
             InetSocketAddress inetSocketAddress = (InetSocketAddress) ctx.channel().localAddress();
             ClientInfo clientInfo = ClientCache.getClientInfoWithPort(inetSocketAddress.getPort());
             ctx.channel().close();
             clientInfo.getClient().init();
+        }
+        super.channelInactive(ctx);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.error(cause.getMessage());
+        if (cause instanceof IOException) {
+            ctx.channel().attr(NetworkModel.ChannelAttribute.RETRY).set(true);
+
         }
         super.exceptionCaught(ctx, cause);
     }
